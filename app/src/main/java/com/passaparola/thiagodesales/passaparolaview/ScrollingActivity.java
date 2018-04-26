@@ -15,13 +15,14 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Random;
 
-public class ScrollingActivity extends AppCompatActivity implements ConnectionResponseHandler {
+public class ScrollingActivity extends AppCompatActivity implements ConnectionResponseHandler, View.OnClickListener {
 
     private RecyclerView meditationListRecyclerView;
     private ImageView chiara;
@@ -86,7 +87,7 @@ public class ScrollingActivity extends AppCompatActivity implements ConnectionRe
         meditationListRecyclerView.setLayoutManager(gridLayoutManager);
 
         meditationsList = new ArrayList<>();
-        listAdapter = new MeditationListAdapter(meditationsList);
+        listAdapter = new MeditationListAdapter(meditationsList,this);
         meditationListRecyclerView.setAdapter(listAdapter);
 
         meditationListRecyclerView.addItemDecoration(
@@ -140,6 +141,12 @@ public class ScrollingActivity extends AppCompatActivity implements ConnectionRe
             Log.d("fireResponse", "Meditações doanloadadas: " + meditationsList.size());
             listAdapter.notifyDataSetChanged();
         }
+    }
 
+    @Override
+    public void onClick(View view) {
+        int meditationSelectedPosition = meditationListRecyclerView.getChildAdapterPosition(view);
+        RSSMeditationItem selectedMeditation = meditationsList.get(meditationSelectedPosition);
+        Toast.makeText(this, selectedMeditation.getParolaPt(), Toast.LENGTH_LONG).show();
     }
 }
