@@ -1,8 +1,10 @@
 package com.passaparola.thiagodesales.passaparolaview;
 
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
@@ -28,6 +30,7 @@ public class ScrollingActivity extends AppCompatActivity implements ConnectionRe
     private ArrayList<RSSMeditationItem> meditationsList;
     private String language;
     private Connections connectionManager;
+    private AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +54,11 @@ public class ScrollingActivity extends AppCompatActivity implements ConnectionRe
                         .setAction("Action", null).show();
 
                 sortChiaraImage();
-
             }
         });
 
+//        LocaleList list = LocaleList.getDefault();
+        dialog = buildAlert();
         language = Locale.getDefault().getLanguage().toString();
         Log.d("IDIOMA", language);
 
@@ -63,10 +67,17 @@ public class ScrollingActivity extends AppCompatActivity implements ConnectionRe
         requestMeditations();
     }
 
+    private AlertDialog buildAlert() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setCancelable(true);
+        dialog.setTitle("Passa Parola");
+        dialog.setView(getLayoutInflater().inflate(R.layout.layout_meditation_item, null));
+        return dialog.create();
+    }
+
     private void sortChiaraImage() {
         int nextChiara = r.nextInt(9);
         String str = "ch" + (nextChiara == 0 ? 1 : nextChiara);
-//        Log.d("imagem sorteada", str);
         chiara.setImageResource(getResources().getIdentifier(str, "drawable", getPackageName()));
     }
 

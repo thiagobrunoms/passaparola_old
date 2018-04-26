@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class MeditationListAdapter extends RecyclerView.Adapter<MeditationItemHolder> {
+public class MeditationListAdapter extends RecyclerView.Adapter<MeditationItemHolder>  {
 
     private final List<RSSMeditationItem> meditationList;
 
