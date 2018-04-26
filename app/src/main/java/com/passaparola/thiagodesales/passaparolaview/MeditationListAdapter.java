@@ -2,6 +2,7 @@ package com.passaparola.thiagodesales.passaparolaview;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.passaparola.thiagodesales.passaparolaview.MeditationItemHolder;
@@ -15,14 +16,18 @@ import java.util.List;
 public class MeditationListAdapter extends RecyclerView.Adapter<MeditationItemHolder>  {
 
     private final List<RSSMeditationItem> meditationList;
+    private View.OnClickListener clickListener;
 
-    public MeditationListAdapter(List<RSSMeditationItem> meditationList) {
+    public MeditationListAdapter(List<RSSMeditationItem> meditationList, View.OnClickListener clickListener) {
         this.meditationList = meditationList;
+        this.clickListener = clickListener;
     }
 
     @Override
     public MeditationItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MeditationItemHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_meditation_item, parent, false));
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_meditation_item, parent, false);
+        view.setOnClickListener(clickListener);
+        return new MeditationItemHolder(view);
     }
 
     @Override
