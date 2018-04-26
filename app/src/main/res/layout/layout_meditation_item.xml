@@ -15,7 +15,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:text="Parola Title"
-        android:textColor="@color/colorPrimary"
+
         android:textStyle="bold|italic" />
 
     <TextView
@@ -26,7 +26,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="62dp"
         android:maxHeight="40sp"
-        android:textColor="@color/colorPrimary"
+
         android:text="Meditation Text" />
 
     <TextView
@@ -36,7 +36,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:text="Date"
-        android:textColor="@color/colorPrimary"
+
         android:textStyle="bold" />
 
 </RelativeLayout>

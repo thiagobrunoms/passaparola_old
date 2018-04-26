@@ -1,7 +1,7 @@
 package com.passaparola.thiagodesales.passaparolaview;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.LocaleList;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -15,18 +15,15 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.Random;
 
 public class ScrollingActivity extends AppCompatActivity implements ConnectionResponseHandler, View.OnClickListener {
 
     private RecyclerView meditationListRecyclerView;
     private ImageView chiara;
-    private Random r;
     private MeditationListAdapter listAdapter;
     private ArrayList<RSSMeditationItem> meditationsList;
     private String language;
@@ -41,9 +38,8 @@ public class ScrollingActivity extends AppCompatActivity implements ConnectionRe
         setSupportActionBar(toolbar);
 
         connectionManager = new Connections(this);
-        r = new Random();
         chiara = findViewById(R.id.imageView);
-        sortChiaraImage();
+        setTopImage();
 
         meditationListRecyclerView = (RecyclerView) findViewById(R.id.meditationsRecyclerView);
 
@@ -54,7 +50,7 @@ public class ScrollingActivity extends AppCompatActivity implements ConnectionRe
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
-                sortChiaraImage();
+                setTopImage();
             }
         });
 
@@ -76,10 +72,9 @@ public class ScrollingActivity extends AppCompatActivity implements ConnectionRe
         return dialog.create();
     }
 
-    private void sortChiaraImage() {
-        int nextChiara = r.nextInt(9);
-        String str = "ch" + (nextChiara == 0 ? 1 : nextChiara);
-        chiara.setImageResource(getResources().getIdentifier(str, "drawable", getPackageName()));
+    private void setTopImage() {
+        String chiaraId = Utils.sortChiaraImage();
+        chiara.setImageResource(getResources().getIdentifier(chiaraId, "drawable", getPackageName()));
     }
 
     private void setupMeditationList() {
@@ -147,6 +142,15 @@ public class ScrollingActivity extends AppCompatActivity implements ConnectionRe
     public void onClick(View view) {
         int meditationSelectedPosition = meditationListRecyclerView.getChildAdapterPosition(view);
         RSSMeditationItem selectedMeditation = meditationsList.get(meditationSelectedPosition);
-        Toast.makeText(this, selectedMeditation.getParolaPt(), Toast.LENGTH_LONG).show();
+
+
+        Intent intent = new Intent(getApplicationContext(), MeditationActivity.class);
+
+        //TODO parola and meditation may by in different languages
+        intent.putExtra(Constants.PAROLA.getConstantName(), selectedMeditation.getParolaPt()); //TODO define constant list
+        intent.putExtra(Constants.MEDITATION.getConstantName(), selectedMeditation.getMeditationPt());
+        intent.putExtra(Constants.PUBLISED_DATE.getConstantName(), selectedMeditation.getPublishedDate());
+        startActivity(intent);
+//        Toast.makeText(this, selectedMeditation.getParolaPt(), Toast.LENGTH_LONG).show();
     }
 }
