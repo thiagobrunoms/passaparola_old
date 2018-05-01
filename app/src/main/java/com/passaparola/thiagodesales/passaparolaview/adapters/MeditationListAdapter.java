@@ -5,12 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.passaparola.thiagodesales.passaparolaview.MeditationItemHolder;
-import com.passaparola.thiagodesales.passaparolaview.RSSMeditationItem;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class MeditationListAdapter extends RecyclerView.Adapter<MeditationItemHolder>  {

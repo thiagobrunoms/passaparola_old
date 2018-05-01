@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.passaparola.thiagodesales.passaparolaview.R;
+
 public class MeditationItemHolder extends RecyclerView.ViewHolder {
 
     public TextView parolaDate;
