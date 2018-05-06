@@ -5,6 +5,7 @@ import android.text.Html;
 import android.util.Log;
 import android.util.Xml;
 
+import com.passaparola.thiagodesales.passaparolaview.model.Parola;
 import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -21,6 +22,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Connections extends AsyncTask<String, Integer, String> {
 
@@ -34,9 +37,12 @@ public class Connections extends AsyncTask<String, Integer, String> {
     private HashMap<Object, Object> params;
     boolean isItem = false;
     private ArrayList<RSSMeditationItem> meditationList;
+    private Pattern pattern;
+    private Parola parolaFromWeb;
 
     public Connections(ConnectionResponseHandler responseHandler) {
         this.responseHandler = responseHandler;
+        pattern = Pattern.compile("(\\d{1,2}/\\d{1,2}/\\d{4}|\\d{1,2}/\\d{1,2})", Pattern.CASE_INSENSITIVE);
     }
 
     public void setParameters(HashMap<Object, Object> params) {
@@ -110,7 +116,16 @@ public class Connections extends AsyncTask<String, Integer, String> {
                     if(isItem) {
                         String meditationPtIt[] = meditation.split("#");
                         String parolaPtIt[] = parola.split("#");
-                        RSSMeditationItem item = new RSSMeditationItem(publishedDate, parolaPtIt[0].trim(), parolaPtIt[1], Html.fromHtml(meditationPtIt[0]).toString(), meditationPtIt[1]);
+
+                        HashMap<String, String> parolas = new HashMap<>();
+                        parolas.put("pt", parolaPtIt[0]);
+                        parolas.put("it", parolaPtIt[1]);
+
+                        HashMap<String, String> meditations = new HashMap<>();
+                        meditations.put("pt", Html.fromHtml(meditationPtIt[0]).toString());
+                        meditations.put("it", meditationPtIt[1]);
+
+                        RSSMeditationItem item = new RSSMeditationItem(publishedDate, parolas, meditations);
                         Log.d("MEDITAÇÃO COMPLETA", item.toString());
                         meditationList.add(item);
                     }
@@ -167,9 +182,18 @@ public class Connections extends AsyncTask<String, Integer, String> {
             }
 
             String responseStr = response.toString();
+            String parolaDate = "";
+            Matcher m = pattern.matcher(responseStr);
+            while (m.find()) {
+                parolaDate = m.group(1);
+            }
+
+            Log.d("html downloadado", responseStr);
             todaysParola = responseStr.split("</STRONG>")[1].split("<STRONG>")[1];
+//            todaysParola = todaysParola + "#" + parolaDate;
             Log.d("response web", "response: " + todaysParola);
 
+            parolaFromWeb = new Parola(parolaDate, todaysParola, language);
             rd.close();
         } catch(IOException e) {
             e.printStackTrace();
@@ -198,8 +222,8 @@ public class Connections extends AsyncTask<String, Integer, String> {
     protected void onPostExecute(String result) {
         Log.d("onPostExecute", "Executando onPostExecute");
 
-        if (todaysParola != null)
-            responseHandler.fireResponse(todaysParola);
+        if (parolaFromWeb != null)
+            responseHandler.fireResponse(parolaFromWeb);
         else if (meditationList != null)
             responseHandler.fireResponse(meditationList);
     }

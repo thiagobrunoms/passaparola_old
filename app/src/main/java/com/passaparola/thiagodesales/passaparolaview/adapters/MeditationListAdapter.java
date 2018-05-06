@@ -1,9 +1,13 @@
-package com.passaparola.thiagodesales.passaparolaview;
+package com.passaparola.thiagodesales.passaparolaview.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.passaparola.thiagodesales.passaparolaview.holders.MeditationItemHolder;
+import com.passaparola.thiagodesales.passaparolaview.R;
+import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
 
 import java.util.List;
 
@@ -34,8 +38,8 @@ public class MeditationListAdapter extends RecyclerView.Adapter<MeditationItemHo
         publishedDate = dateParts[2].split("T")[0] + "/" + dateParts[1] + "/" + dateParts[0];
 
         holder.parolaDate.setText(publishedDate);
-        holder.parolaTitle.setText(meditationItem.getParolaPt()); //TODO find out the current language
-        holder.meditation.setText(meditationItem.getMeditationPt());
+        holder.parolaTitle.setText(meditationItem.getParola("pt")); //TODO find out the current language
+        holder.meditation.setText(meditationItem.getMeditation("pt"));
 
 //        holder.shareButton.setOnClickListener(); TODO setup an event listener passed from the constructor that implements AsyncTask for sharing...
 

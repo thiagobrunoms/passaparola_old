@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/pt"
+        android:title="Português"
+        android:icon="@drawable/pt"/>
+
+    <item
+        android:id="@+id/pt"
+        android:title="Croata"
+        android:icon="@drawable/cr"/>
+
+    <item
+        android:id="@+id/pt"
+        android:title="Inglês"
+        android:icon="@drawable/en"/>
+
+    <item
+        android:id="@+id/pt"
+        android:title="Italiano"
+        android:icon="@drawable/it"/>
+
+</menu>

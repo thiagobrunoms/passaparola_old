@@ -5,15 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ScrollingActivity"
-    tools:showIn="@layout/activity_scrolling">
+    tools:context=".activities.ScrollingActivity"
+    tools:showIn="@layout/activity_scrolling"
+    android:background="@color/cyan">
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/meditationsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="@color/cyan"
         tools:listitem="@layout/layout_meditation_item"
         />
 

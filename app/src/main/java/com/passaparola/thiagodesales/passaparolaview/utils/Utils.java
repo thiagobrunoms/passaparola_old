@@ -1,4 +1,4 @@
-package com.passaparola.thiagodesales.passaparolaview;
+package com.passaparola.thiagodesales.passaparolaview.utils;
 
 import java.util.Random;
 

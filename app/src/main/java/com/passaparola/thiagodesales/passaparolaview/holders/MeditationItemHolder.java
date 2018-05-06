@@ -1,4 +1,4 @@
-package com.passaparola.thiagodesales.passaparolaview;
+package com.passaparola.thiagodesales.passaparolaview.holders;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

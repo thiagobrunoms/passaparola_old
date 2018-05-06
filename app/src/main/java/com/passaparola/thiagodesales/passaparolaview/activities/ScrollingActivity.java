@@ -1,4 +1,4 @@
-package com.passaparola.thiagodesales.passaparolaview;
+package com.passaparola.thiagodesales.passaparolaview.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,14 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+
+import com.passaparola.thiagodesales.passaparolaview.R;
+import com.passaparola.thiagodesales.passaparolaview.adapters.MeditationListAdapter;
+import com.passaparola.thiagodesales.passaparolaview.connection.ConnectionResponseHandler;
+import com.passaparola.thiagodesales.passaparolaview.connection.Connections;
+import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
+import com.passaparola.thiagodesales.passaparolaview.utils.Constants;
+import com.passaparola.thiagodesales.passaparolaview.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -140,17 +148,29 @@ public class ScrollingActivity extends AppCompatActivity implements ConnectionRe
 
     @Override
     public void onClick(View view) {
-        int meditationSelectedPosition = meditationListRecyclerView.getChildAdapterPosition(view);
-        RSSMeditationItem selectedMeditation = meditationsList.get(meditationSelectedPosition);
-
-
-        Intent intent = new Intent(getApplicationContext(), MeditationActivity.class);
-
-        //TODO parola and meditation may by in different languages
-        intent.putExtra(Constants.PAROLA.getConstantName(), selectedMeditation.getParolaPt()); //TODO define constant list
-        intent.putExtra(Constants.MEDITATION.getConstantName(), selectedMeditation.getMeditationPt());
-        intent.putExtra(Constants.PUBLISED_DATE.getConstantName(), selectedMeditation.getPublishedDate());
+        Log.d("onClick Event :)", "iniciando activity com aba");
+        Intent intent = new Intent(getApplicationContext(), NewPassaParola.class);
         startActivity(intent);
+//        int id = view.getId();
+//
+//        switch (id) {
+//            case R.id.meditationsRecyclerView:
+//                break;
+//
+//                case R.id
+//        }
+
+//        int meditationSelectedPosition = meditationListRecyclerView.getChildAdapterPosition(view);
+//        RSSMeditationItem selectedMeditation = meditationsList.get(meditationSelectedPosition);
+//
+//
+//        Intent intent = new Intent(getApplicationContext(), MeditationActivity.class);
+//
+//        //TODO parola and meditation may by in different languages
+//        intent.putExtra(Constants.PAROLA.getConstantName(), selectedMeditation.getParolaPt()); //TODO define constant list
+//        intent.putExtra(Constants.MEDITATION.getConstantName(), selectedMeditation.getMeditationPt());
+//        intent.putExtra(Constants.PUBLISED_DATE.getConstantName(), selectedMeditation.getPublishedDate());
+//        startActivity(intent);
 //        Toast.makeText(this, selectedMeditation.getParolaPt(), Toast.LENGTH_LONG).show();
     }
 }

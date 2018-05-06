@@ -5,18 +5,24 @@ import java.util.HashMap;
 public class RSSMeditationItem {
 
     private String publishedDate;
-    private String parolaPt;
-    private String parolaIt;
-    private String meditationPt;
-    private String meditationIt;
-//    private HashMap<>
+    private HashMap<String, String> parolas;
+    private HashMap<String, String> meditations;
 
-    public RSSMeditationItem(String publishedDate, String parolaPt, String parolaIt, String meditationPt, String meditationIt) {
+    public RSSMeditationItem(String publishedDate, HashMap<String, String> parolas, HashMap<String, String> meditations) {
         this.publishedDate = publishedDate;
-        this.parolaPt = parolaPt;
-        this.parolaIt = parolaIt;
-        this.meditationPt = meditationPt;
-        this.meditationIt = meditationIt;
+        this.parolas = parolas;
+        this.meditations = meditations;
+    }
+
+    public RSSMeditationItem(String publishedDate) {
+        this.publishedDate = publishedDate;
+        this.parolas = new HashMap<>();
+        this.meditations = new HashMap<>();
+    }
+
+    public RSSMeditationItem() {
+        this.parolas = new HashMap<>();
+        this.meditations = new HashMap<>();
     }
 
     public String getPublishedDate() {
@@ -27,46 +33,44 @@ public class RSSMeditationItem {
         this.publishedDate = publishedDate;
     }
 
-    public String getParolaPt() {
-        return parolaPt;
+    public HashMap<String, String> getMeditations() {
+        return meditations;
     }
 
-    public void setParolaPt(String parolaPt) {
-        this.parolaPt = parolaPt;
+    public HashMap<String, String> getParolas() {
+        return parolas;
     }
 
-    public String getParolaIt() {
-        return parolaIt;
+    public void setParola(String language, String parola) {
+        this.parolas.put(language, parola);
     }
 
-    public void setParolaIt(String parolaIt) {
-        this.parolaIt = parolaIt;
+    public void setMeditation(String language, String meditation) {
+        this.meditations.put(language, meditation);
     }
 
-    public String getMeditationPt() {
-        return meditationPt;
+    public String getParola(String language) {
+        return this.parolas.get(language);
     }
 
-    public void setMeditationPt(String meditationPt) {
-        this.meditationPt = meditationPt;
-    }
-
-    public String getMeditationIt() {
-        return meditationIt;
-    }
-
-    public void setMeditationIt(String meditationIt) {
-        this.meditationIt = meditationIt;
+    public String getMeditation(String language) {
+        return this.meditations.get(language);
     }
 
     @Override
     public String toString() {
-        return "RSSMeditationItem{" +
-                "publishedDate='" + publishedDate + '\'' +
-                ", parolaPt='" + parolaPt + '\'' +
-                ", parolaIt='" + parolaIt + '\'' +
-                ", meditationPt='" + meditationPt + '\'' +
-                ", meditationIt='" + meditationIt + '\'' +
-                '}';
+        String thisItem = publishedDate + " - \n";
+
+        String eachParola = "= Parolas =\n";
+        for (String language : parolas.keySet()) {
+            eachParola = eachParola + language + " -> " + parolas.get(language) + "\n";
+        }
+
+        String eachMeditation = "Meditations=\n";
+        for(String language : meditations.keySet()) {
+            eachMeditation = eachMeditation + language + " -> " + meditations.get(language) + "\n";
+        }
+
+        return thisItem + eachParola + eachMeditation;
     }
 }

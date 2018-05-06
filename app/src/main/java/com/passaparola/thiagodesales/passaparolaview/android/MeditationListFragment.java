@@ -1,6 +1,7 @@
 package com.passaparola.thiagodesales.passaparolaview.android;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,7 +21,7 @@ import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
 
 import java.util.ArrayList;
 
-public class MeditationListFragment extends Fragment implements ConnectionResponseHandler, View.OnClickListener {
+public class MeditationListFragment extends Fragment implements View.OnClickListener {
 
     private RecyclerView meditationListRecyclerView;
     private ArrayList<RSSMeditationItem> meditationsList;
@@ -31,6 +32,8 @@ public class MeditationListFragment extends Fragment implements ConnectionRespon
 
     public MeditationListFragment(Context context) {
         this.context = context;
+        meditationsList = new ArrayList<>();
+        listAdapter = new MeditationListAdapter(meditationsList,this);
     }
 
     @Nullable
@@ -38,17 +41,11 @@ public class MeditationListFragment extends Fragment implements ConnectionRespon
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.content_scrolling, container, false);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
-
         meditationListRecyclerView = (RecyclerView) view.findViewById(R.id.meditationsRecyclerView);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
         meditationListRecyclerView.setLayoutManager(gridLayoutManager);
-
-        meditationsList = new ArrayList<>();
-
-        listAdapter = new MeditationListAdapter(meditationsList,this);
         meditationListRecyclerView.setAdapter(listAdapter);
-
-        requestMeditations();
 
         meditationListRecyclerView.addItemDecoration(
                 new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
@@ -56,19 +53,11 @@ public class MeditationListFragment extends Fragment implements ConnectionRespon
         return view;
     }
 
-    protected void requestMeditations() {
-        Connections connectionManager = new Connections(this);
-        connectionManager.setRequestType(Connections.REQUEST_TYPES.MEDITATION);
-        connectionManager.execute();
-    }
-
-    @Override
-    public void fireResponse(Object response) {
-        Log.d("fireResponse", "Chegou resposta assíncrona da lista");
-        meditationsList.addAll((ArrayList<RSSMeditationItem>) response);
-        Log.d("fireResponse", "Meditações doanloadadas: " + meditationsList.size());
+    public void setMeditationList(ArrayList<RSSMeditationItem> meditationList) {
+        this.meditationsList.addAll(meditationList);
         listAdapter.notifyDataSetChanged();
     }
+
 
     @Override
     public void onClick(View view) {

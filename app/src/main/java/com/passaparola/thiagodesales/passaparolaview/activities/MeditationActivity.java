@@ -1,4 +1,4 @@
-package com.passaparola.thiagodesales.passaparolaview;
+package com.passaparola.thiagodesales.passaparolaview.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.passaparola.thiagodesales.passaparolaview.R;
+import com.passaparola.thiagodesales.passaparolaview.utils.Constants;
+import com.passaparola.thiagodesales.passaparolaview.utils.Utils;
 
 public class MeditationActivity extends AppCompatActivity {
 

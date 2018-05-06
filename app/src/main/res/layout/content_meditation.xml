@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MeditationActivity"
-    tools:showIn="@layout/activity_meditation">
+    tools:context=".activities.MeditationActivity"
+    tools:showIn="@layout/activity_meditation"
+    android:background="@color/cyan">
 
 
     <LinearLayout
@@ -22,6 +23,7 @@
             android:layout_alignParentTop="true"
             android:text="Date"
             android:textSize="20dp"
+            android:textColor="@color/colorWhite"
             android:textStyle="bold" />
 
         <TextView
@@ -32,7 +34,8 @@
             android:layout_alignParentTop="true"
             android:text="Parola"
             android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/colorWhite"/>
 
         <TextView
             android:id="@+id/meditation_text_view"
@@ -42,7 +45,8 @@
             android:layout_alignParentTop="true"
             android:text="Meditation"
             android:textSize="20dp"
-            android:textStyle="italic" />
+            android:textStyle="italic"
+            android:textColor="@color/colorWhite"/>
 
 
     </LinearLayout>
