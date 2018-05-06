@@ -29,7 +29,7 @@ public class MeditationFragment extends Fragment {
         return view;
     }
 
-    public void setMeditation(String date, RSSMeditationItem meditation) {
+    public void setMeditation(RSSMeditationItem meditation) {
         dateTextView.setText(meditation.getPublishedDate());//TODO Pode chegar a resposta da requisição sem ter montado a interface. Talvez na hora que chegar, colocar primeiro no BD
         parolaTextView.setText(meditation.getParola("pt")); //TODO w.r.t local language
         meditationView.setText(meditation.getMeditation("pt"));//TODO w.r.t local language

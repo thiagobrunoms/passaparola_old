@@ -12,17 +12,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.passaparola.thiagodesales.passaparolaview.R;
-import com.passaparola.thiagodesales.passaparolaview.connection.ConnectionResponseHandler;
 import com.passaparola.thiagodesales.passaparolaview.connection.Connections;
 import com.passaparola.thiagodesales.passaparolaview.database.DatabaseDataManagement;
+import com.passaparola.thiagodesales.passaparolaview.facade.Facade;
+import com.passaparola.thiagodesales.passaparolaview.listeners.NewParolaListener;
 import com.passaparola.thiagodesales.passaparolaview.model.Parola;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
 
-public class ParolaFragment extends Fragment implements ConnectionResponseHandler {
+public class ParolaFragment extends Fragment implements NewParolaListener {
 
     private TextView parolaPraseTextView;
     private TextView parolaDateTextView;
@@ -32,6 +30,7 @@ public class ParolaFragment extends Fragment implements ConnectionResponseHandle
     private String currentLanguageId;
     private Connections connectionManager;
     private Context context;
+    private Facade facade;
 
     public ParolaFragment(Context context) {
         this.context = context;
@@ -45,7 +44,8 @@ public class ParolaFragment extends Fragment implements ConnectionResponseHandle
 
         parolaPraseTextView = view.findViewById(R.id.parola_phrase_id);
         parolaDateTextView = view.findViewById(R.id.passa_parola_date_textview_id);
-        connectionManager = new Connections(this);
+        facade = Facade.getInstance(this.context);
+        facade.addParolaListerner(this);
 
         return view;
     }
@@ -56,28 +56,17 @@ public class ParolaFragment extends Fragment implements ConnectionResponseHandle
         requestParola();
     }
 
-    public void setRequestParolaLanguage(String languageId) {
+    public void setCurrentParolaLanguage(String languageId) {
         currentLanguageId = languageId;
     }
 
     public void requestParola() {
-        db = DatabaseDataManagement.getInstance(this.context);
-        HashMap<String, Parola> lastParolas = db.readLastParolas();
+        HashMap<String, Parola> lastParolas = facade.readParolas();
 
-        Log.d("requestParola", "Verificando parola armazenada");
         if (lastParolas.size() == 0 || lastParolas.get(currentLanguageId) == null) {
-            Log.d("requestParola", "existe uma nova!!");
-            connectionManager = new Connections(this);
-            connectionManager.setRequestType(Connections.REQUEST_TYPES.PAROLA);
-            HashMap<Object, Object> params = new HashMap<>();
-            params.put("language", currentLanguageId);
-            connectionManager.setParameters(params);
-            connectionManager.execute();
-        } else {
-            Log.d("requestParola", "pode pegar do DB!!");
+            facade.downloadParola(currentLanguageId);
+        } else
             feedUI(lastParolas.get(currentLanguageId));
-        }
-
 
         flagImageView = view.findViewById(R.id.flag);
         flagImageView.setImageResource(getResources().getIdentifier(currentLanguageId, "drawable", getContext().getPackageName()));
@@ -89,9 +78,7 @@ public class ParolaFragment extends Fragment implements ConnectionResponseHandle
     }
 
     @Override
-    public void fireResponse(Object object) {
-        Parola parola = (Parola) object;
+    public void onNewParola(Parola parola) {
         feedUI(parola);
-        db.insertParola(parola);
     }
 }

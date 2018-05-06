@@ -2,22 +2,17 @@ package com.passaparola.thiagodesales.passaparolaview.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import com.passaparola.thiagodesales.passaparolaview.R;
 import com.passaparola.thiagodesales.passaparolaview.android.MeditationFragment;
@@ -70,7 +65,7 @@ public class NewPassaParola extends AppCompatActivity implements ConnectionRespo
 
         parolaFragment = new ParolaFragment(getApplicationContext());
         pagerAdapter.addFragment(parolaFragment, "Parola"); //TODO Internationalitions
-        parolaFragment.setRequestParolaLanguage("pt");
+        parolaFragment.setCurrentParolaLanguage("pt");
 
         meditationFragment = new MeditationFragment();
         pagerAdapter.addFragment(meditationFragment, "Meditação"); //TODO Internationalitions
@@ -149,7 +144,7 @@ public class NewPassaParola extends AppCompatActivity implements ConnectionRespo
     public void fireResponse(Object response) {
         Log.d("fireResponse", "Chegou resposta assíncrona no NewPassaParola");
         meditationsList.addAll((ArrayList<RSSMeditationItem>) response);
-        meditationFragment.setMeditation("", meditationsList.get(0));
+        meditationFragment.setMeditation(meditationsList.get(0));
         meditationListFragment.setMeditationList(meditationsList);
     }
 
@@ -169,7 +164,7 @@ public class NewPassaParola extends AppCompatActivity implements ConnectionRespo
         String languageId = hashLangId.get(language);
         Log.d("Selecionado", language + " -> " + languageId);
 
-        parolaFragment.setRequestParolaLanguage(languageId);
+        parolaFragment.setCurrentParolaLanguage(languageId);
         parolaFragment.requestParola();
         idiomaList.hide();
 
