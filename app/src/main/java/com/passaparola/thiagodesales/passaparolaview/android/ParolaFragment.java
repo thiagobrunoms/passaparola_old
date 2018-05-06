@@ -45,18 +45,14 @@ public class ParolaFragment extends Fragment implements ConnectionResponseHandle
 
         parolaPraseTextView = view.findViewById(R.id.parola_phrase_id);
         parolaDateTextView = view.findViewById(R.id.passa_parola_date_textview_id);
-
-//        parolaPraseTextView.setText("Thiago de Sales Testando Passa Parolad de Hoje. Ok? Blz!! Grande demais já!!");
         connectionManager = new Connections(this);
 
         return view;
-
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
         requestParola();
     }
 
@@ -82,24 +78,14 @@ public class ParolaFragment extends Fragment implements ConnectionResponseHandle
             feedUI(lastParolas.get(currentLanguageId));
         }
 
-        if (view != null) {
-            flagImageView = view.findViewById(R.id.flag);
-            flagImageView.setImageResource(getResources().getIdentifier(currentLanguageId, "drawable", getContext().getPackageName()));
-        } else
-            Log.d("ParolaFrag", "Por quê é nulo?");
+
+        flagImageView = view.findViewById(R.id.flag);
+        flagImageView.setImageResource(getResources().getIdentifier(currentLanguageId, "drawable", getContext().getPackageName()));
     }
 
     private void feedUI(Parola parola) {
-        if(parola != null) {
-            if (parolaDateTextView == null) {
-                Log.d("parolaDateTextView", "EH NULO?!?!");
-            } else {
-                parolaDateTextView.setText(parola.getDate());
-                parolaPraseTextView.setText(parola.getParola());
-            }
-        } else {
-            Log.d("feedUI", "Parola é null!");
-        }
+        parolaDateTextView.setText(parola.getDate());
+        parolaPraseTextView.setText(parola.getParola());
     }
 
     @Override
