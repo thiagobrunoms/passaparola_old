@@ -17,18 +17,17 @@ import android.widget.ListView;
 import com.passaparola.thiagodesales.passaparolaview.R;
 import com.passaparola.thiagodesales.passaparolaview.android.MeditationFragment;
 import com.passaparola.thiagodesales.passaparolaview.android.MeditationListFragment;
-import com.passaparola.thiagodesales.passaparolaview.android.MyFragmentPagerAdapter;
+import com.passaparola.thiagodesales.passaparolaview.adapters.MyFragmentPagerAdapter;
 import com.passaparola.thiagodesales.passaparolaview.android.ParolaFragment;
-import com.passaparola.thiagodesales.passaparolaview.connection.ConnectionResponseHandler;
-import com.passaparola.thiagodesales.passaparolaview.connection.Connections;
 import com.passaparola.thiagodesales.passaparolaview.database.DatabaseDataManagement;
+import com.passaparola.thiagodesales.passaparolaview.listeners.MeditationListener;
 import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
 import com.passaparola.thiagodesales.passaparolaview.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class NewPassaParola extends AppCompatActivity implements ConnectionResponseHandler, View.OnClickListener, AdapterView.OnItemClickListener {
+public class NewPassaParola extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener, MeditationListener {
 
     private ArrayList<RSSMeditationItem> meditationsList;
     private MeditationListFragment meditationListFragment;
@@ -38,7 +37,8 @@ public class NewPassaParola extends AppCompatActivity implements ConnectionRespo
     private AlertDialog idiomaList;
     private HashMap<String, String> hashLangId;
     private ParolaFragment parolaFragment;
-    private DatabaseDataManagement db;
+    private String languageId;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +69,13 @@ public class NewPassaParola extends AppCompatActivity implements ConnectionRespo
 
         meditationFragment = new MeditationFragment();
         pagerAdapter.addFragment(meditationFragment, "Meditação"); //TODO Internationalitions
+        meditationFragment.setCurrentParolaLanguage("pt");
 
-        meditationListFragment = new MeditationListFragment(getApplicationContext());
+        meditationListFragment = new MeditationListFragment(getApplicationContext(), "pt", this);
         pagerAdapter.addFragment(meditationListFragment, "Experiências");//TODO Internationalitions
+//        meditationListFragment.setCurrentParolaLanguage("pt");
 
-        requestMeditations();
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.menuTab);
+        tabLayout = (TabLayout) findViewById(R.id.menuTab);
         final ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
         pager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(pager);
@@ -133,40 +133,34 @@ public class NewPassaParola extends AppCompatActivity implements ConnectionRespo
         chiara.setImageResource(getResources().getIdentifier("ch2", "drawable", getPackageName()));
     }
 
-    protected void requestMeditations() {
-        meditationsList = new ArrayList<>();
-        Connections connectionManager = new Connections(this);
-        connectionManager.setRequestType(Connections.REQUEST_TYPES.MEDITATION);
-        connectionManager.execute();
-    }
-//
-    @Override
-    public void fireResponse(Object response) {
-        Log.d("fireResponse", "Chegou resposta assíncrona no NewPassaParola");
-        meditationsList.addAll((ArrayList<RSSMeditationItem>) response);
-        meditationFragment.setMeditation(meditationsList.get(0));
-        meditationListFragment.setMeditationList(meditationsList);
-    }
-
     @Override
     public void onClick(View view) {
-//        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show();
-
-//        popupMenu.show();
-
         idiomaList.show();
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         String language = (String) listView.getItemAtPosition(position);
-        String languageId = hashLangId.get(language);
+        languageId = hashLangId.get(language);
         Log.d("Selecionado", language + " -> " + languageId);
 
         parolaFragment.setCurrentParolaLanguage(languageId);
         parolaFragment.requestParola();
-        idiomaList.hide();
 
+        if (meditationListFragment.isAdded())
+            meditationListFragment.setCurrentParolaLanguage(languageId);
+
+        if (meditationFragment.isAdded()) {
+            meditationFragment.setCurrentParolaLanguage(languageId);
+            meditationFragment.requestMeditations();
+        }
+
+        idiomaList.hide();
+    }
+
+    @Override
+    public void onNewMeditation(ArrayList<RSSMeditationItem> meditations) {
+        meditationFragment.setMeditation(meditations.get(0));
+        tabLayout.getTabAt(1).select();
     }
 }

@@ -15,12 +15,12 @@ import com.passaparola.thiagodesales.passaparolaview.R;
 import com.passaparola.thiagodesales.passaparolaview.connection.Connections;
 import com.passaparola.thiagodesales.passaparolaview.database.DatabaseDataManagement;
 import com.passaparola.thiagodesales.passaparolaview.facade.Facade;
-import com.passaparola.thiagodesales.passaparolaview.listeners.NewParolaListener;
+import com.passaparola.thiagodesales.passaparolaview.listeners.ParolaListener;
 import com.passaparola.thiagodesales.passaparolaview.model.Parola;
 
 import java.util.HashMap;
 
-public class ParolaFragment extends Fragment implements NewParolaListener {
+public class ParolaFragment extends Fragment implements ParolaListener {
 
     private TextView parolaPraseTextView;
     private TextView parolaDateTextView;
@@ -44,8 +44,6 @@ public class ParolaFragment extends Fragment implements NewParolaListener {
 
         parolaPraseTextView = view.findViewById(R.id.parola_phrase_id);
         parolaDateTextView = view.findViewById(R.id.passa_parola_date_textview_id);
-        facade = Facade.getInstance(this.context);
-        facade.addParolaListerner(this);
 
         return view;
     }
@@ -53,6 +51,10 @@ public class ParolaFragment extends Fragment implements NewParolaListener {
     @Override
     public void onStart() {
         super.onStart();
+
+        facade = Facade.getInstance(this.context);
+        facade.addParolaListerner(this);
+
         requestParola();
     }
 

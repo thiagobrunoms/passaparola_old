@@ -1,4 +1,4 @@
-package com.passaparola.thiagodesales.passaparolaview.android;
+package com.passaparola.thiagodesales.passaparolaview.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

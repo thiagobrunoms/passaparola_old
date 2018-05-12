@@ -15,7 +15,9 @@ import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.TimeZone;
 
 public class DatabaseDataManagement {
 
@@ -30,26 +32,21 @@ public class DatabaseDataManagement {
 
     private DatabaseDataManagement(Context context) {
         this.context = context;
-        if (this.context == null) Log.d("context", "nulllll");
-        else if (context == null) Log.d("context2", "nullll2");
-        else Log.d("context", "nao nulos...");
         databaseManagement = new DatabaseManagement(this.context);
-        if (databaseManagement == null) Log.d("DatabaseDataManagement", "EH NULO!");
-        else Log.d("DatabaseDataManagement", "NÃO É NULO!");
         sqlWriteable = databaseManagement.getWritableDatabase();
         sqlReadable = databaseManagement.getReadableDatabase();
         supportedLanguages = context.getResources().getStringArray(R.array.supported_meditations);
     }
 
     public static DatabaseDataManagement getInstance(Context context) {
-        Log.d("getInstance", "Criando instancia de BD");
         if (instance == null)
             instance = new DatabaseDataManagement(context);
 
         return instance;
     }
 
-    public boolean insertMeditation(RSSMeditationItem meditation) throws DataInsertionException {
+    //TODO Estou apenas adicionando a lista de meditações. Entretanto, não estou removendo as antigas quando atualizo a lista inteira.
+    public boolean insertMeditation(RSSMeditationItem meditation) {
         Log.d("insertMeditation", meditation.toString());
         ContentValues values = new ContentValues();
 
@@ -58,16 +55,14 @@ public class DatabaseDataManagement {
 
         String date = meditation.getPublishedDate();
         long status;
-        for (int i=0; i<supportedLanguages.length; i++) {
+        for (int i = 0; i < supportedLanguages.length; i++) {
             values.put(DatabaseDefinitions.Meditations.DATE, date); //TODO Is it necessary?
-            values.put(DatabaseDefinitions.Meditations.LANGUAGE, parolas.get(supportedLanguages[i]));
+            values.put(DatabaseDefinitions.Meditations.LANGUAGE, supportedLanguages[i]);
             values.put(DatabaseDefinitions.Meditations.PAROLA, parolas.get(supportedLanguages[i]));
             values.put(DatabaseDefinitions.Meditations.MEDITATION, meditations.get(supportedLanguages[i]));
 
+            //TODO throw exception in case of status = -1?
             status = sqlWriteable.insert(DatabaseDefinitions.Meditations.TABLE_NAME, null, values);
-            if (status == -1)
-                throw new DataInsertionException("Insertion error for parola " + parolas.get(supportedLanguages[i]) + " - " +
-                        values.toString());
 
             values.clear();
         }
@@ -83,34 +78,62 @@ public class DatabaseDataManagement {
     }
 
     public ArrayList<RSSMeditationItem> readAllMeditations() {
-        Cursor cursor = sqlReadable.query(DatabaseDefinitions.Meditations.TABLE_NAME, new String[]{
-                DatabaseDefinitions.Meditations.DATE, DatabaseDefinitions.Meditations.PAROLA, DatabaseDefinitions.Meditations.MEDITATION
-        }, null, null, null, null, "date(" + DatabaseDefinitions.Meditations.DATE + ")" +
+        Log.d("readAllMeditations", "Lendo todas as meditações");
+        Cursor cursor = sqlReadable.query(DatabaseDefinitions.Meditations.TABLE_NAME, null, null, null, null, null, "date(" + DatabaseDefinitions.Meditations.DATE + ")" +
                 OrderDirection.ASC.name());
 
-        cursor.moveToFirst();
-
         ArrayList<RSSMeditationItem> meditations = new ArrayList<>();
-        RSSMeditationItem meditation = new RSSMeditationItem();
-        String previousDate = cursor.getString(cursor.getColumnIndex(DatabaseDefinitions.Meditations.DATE));
-        meditation.setPublishedDate(previousDate);
-        feedData(meditation, cursor);
+        Log.d("readAllMeditations", "getCount = " + cursor.getCount());
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
 
-        meditations.add(meditation);
-        while(cursor.moveToNext()) {
-            String currentDate = cursor.getString(cursor.getColumnIndex(DatabaseDefinitions.Meditations.DATE));
-            if (currentDate.equals(previousDate)) {
-                feedData(meditation, cursor);
-            } else {
-                previousDate = currentDate;
-                meditation = new RSSMeditationItem();
-                meditation.setPublishedDate(previousDate);
-                feedData(meditation, cursor);
-                meditations.add(meditation);
-            }
-        }
+            RSSMeditationItem meditation = new RSSMeditationItem();
+            String previousDate = cursor.getString(cursor.getColumnIndex(DatabaseDefinitions.Meditations.DATE));
+            meditation.setPublishedDate(previousDate);
+            feedData(meditation, cursor);
+
+            meditations.add(meditation);
+            do {
+                String currentDate = cursor.getString(cursor.getColumnIndex(DatabaseDefinitions.Meditations.DATE));
+                if (currentDate.equals(previousDate)) {
+                    feedData(meditation, cursor);
+                } else {
+                    previousDate = currentDate;
+                    meditation = new RSSMeditationItem();
+                    meditation.setPublishedDate(previousDate);
+                    feedData(meditation, cursor);
+                    meditations.add(meditation);
+                }
+            } while(cursor.moveToNext());
+        } else Log.d("reaadAllMeditations", "Não ha meditações salvas!");
 
         return meditations;
+    }
+
+    public RSSMeditationItem readMeditationFromDate(Date dateFrom) {
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        df.setTimeZone(TimeZone.getTimeZone( "GMT-03:00" )); //Brazil :)
+        String date = df.format(dateFrom);
+
+        Log.d("Date a ser buscada", date);
+        Cursor cursor = sqlReadable.query(DatabaseDefinitions.Meditations.TABLE_NAME, null,
+                DatabaseDefinitions.Meditations.DATE + " = ?", new String[]{date}, null, null,
+                null, null);
+
+        RSSMeditationItem meditationItem = null;
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            meditationItem = new RSSMeditationItem();
+            meditationItem.setPublishedDate(cursor.getString(cursor.getColumnIndex(DatabaseDefinitions.Meditations.DATE)));
+
+            do {
+                String languageId = cursor.getString(cursor.getColumnIndex(DatabaseDefinitions.Meditations.LANGUAGE));
+                meditationItem.setParola(languageId, cursor.getString(cursor.getColumnIndex(DatabaseDefinitions.Meditations.PAROLA)));
+                meditationItem.setMeditation(languageId, cursor.getString(cursor.getColumnIndex(DatabaseDefinitions.Meditations.MEDITATION)));
+            } while(cursor.moveToNext());
+        }
+
+        return meditationItem;
     }
 
     public void insertParola(Parola parola) {
@@ -125,14 +148,10 @@ public class DatabaseDataManagement {
         Log.d("insertParola", "Id da parola " + returnedId);
     }
 
-    public ArrayList<Parola> readAllParolas() {
-        //TODO
-        return null;
-    }
-
     public HashMap<String, Parola> readLastParolas() {
-        Calendar c = Calendar.getInstance();
-        String today = new SimpleDateFormat("dd/MM/yyyy").format(c.getTime());
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        df.setTimeZone(TimeZone.getTimeZone( "GMT-03:00" )); //Brazil :)
+        String today = df.format(Calendar.getInstance().getTime());
 
         Log.d("readLastParolas",  "buscando parolas da data " + today);
 

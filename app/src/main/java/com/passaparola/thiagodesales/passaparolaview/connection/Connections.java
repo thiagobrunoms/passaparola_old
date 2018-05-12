@@ -20,10 +20,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 public class Connections extends AsyncTask<String, Integer, String> {
 
@@ -75,8 +77,6 @@ public class Connections extends AsyncTask<String, Integer, String> {
                 String name = xmlPullParser.getName();
                 if(name == null)
                     continue;
-                else
-                    Log.d("requestMeditationsName", name);
 
                 if(eventType == XmlPullParser.END_TAG) {
                     if(name.equalsIgnoreCase("entry")) {
@@ -92,7 +92,7 @@ public class Connections extends AsyncTask<String, Integer, String> {
                     }
                 }
 
-                Log.d("MyXmlParser", "Parsing name ==> " + name);
+
                 String result = "";
                 if (xmlPullParser.next() == XmlPullParser.TEXT) {
                     result = xmlPullParser.getText();
@@ -100,41 +100,43 @@ public class Connections extends AsyncTask<String, Integer, String> {
                 }
 
                 if (name.equalsIgnoreCase("title")) {
-                    Log.d("MEDITACAO TITLE", result);
                     parola = result;
                 } else if (name.equalsIgnoreCase("content")) {
-                    Log.d("MEDITACAO CONTENT", result);
                     meditation = result;
+                    Log.d("MEDITAÇÃO DOWNLOADADA", meditation);
                 } else if (name.equalsIgnoreCase("published")) {
-                    Log.d("MEDITACAO DATE", result);
                     publishedDate = result;
                 }
 
-                Log.d("Connections", "Verificando campos");
                 if (publishedDate != null && parola != null && meditation != null) {
-                    Log.d("CAMPOS", "TODOS OS CAMPOS NÃO NULOS");
                     if(isItem) {
                         String meditationPtIt[] = meditation.split("#");
                         String parolaPtIt[] = parola.split("#");
 
-                        HashMap<String, String> parolas = new HashMap<>();
-                        parolas.put("pt", parolaPtIt[0]);
-                        parolas.put("it", parolaPtIt[1]);
+                        if (parolaPtIt != null && parolaPtIt.length == 2) { //TODO must be equals to the number of meditations supported languages
+                            HashMap<String, String> parolas = new HashMap<>();
+                            parolas.put("pt", parolaPtIt[0]);
+                            parolas.put("it", parolaPtIt[1].trim());
 
-                        HashMap<String, String> meditations = new HashMap<>();
-                        meditations.put("pt", Html.fromHtml(meditationPtIt[0]).toString());
-                        meditations.put("it", meditationPtIt[1]);
+                            HashMap<String, String> meditations = new HashMap<>();
+                            meditations.put("pt", meditationPtIt[0].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
+                            meditations.put("it", meditationPtIt[1].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
 
-                        RSSMeditationItem item = new RSSMeditationItem(publishedDate, parolas, meditations);
-                        Log.d("MEDITAÇÃO COMPLETA", item.toString());
-                        meditationList.add(item);
+                            String dateParts[] = publishedDate.split("T")[0].split("-");
+                            publishedDate = dateParts[2] + "/" + dateParts[1] + "/" + dateParts[0];
+
+                            RSSMeditationItem item = new RSSMeditationItem(publishedDate, parolas, meditations);
+                            Log.d("MEDITAÇÃO COMPLETA", item.toString());
+                            meditationList.add(item);
+                        }
+
                     }
 
                     publishedDate = null;
                     parola = null;
                     meditation = null;
                     isItem = false;
-                } else Log.d("CAMPOS", "AINDA NULOS");
+                }
             }
 
         } catch (MalformedURLException e) {
@@ -196,7 +198,7 @@ public class Connections extends AsyncTask<String, Integer, String> {
             parolaFromWeb = new Parola(parolaDate, todaysParola, language);
             rd.close();
         } catch(IOException e) {
-            e.printStackTrace();
+            Log.d("requestParola", "Provavelmente sem conexão!"); //TODO Treat no connection.
         }
     }
 
