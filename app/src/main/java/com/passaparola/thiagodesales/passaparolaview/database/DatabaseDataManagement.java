@@ -10,6 +10,7 @@ import com.passaparola.thiagodesales.passaparolaview.R;
 import com.passaparola.thiagodesales.passaparolaview.exceptions.DataInsertionException;
 import com.passaparola.thiagodesales.passaparolaview.model.Parola;
 import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
+import com.passaparola.thiagodesales.passaparolaview.utils.Utils;
 
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
@@ -111,9 +112,7 @@ public class DatabaseDataManagement {
     }
 
     public RSSMeditationItem readMeditationFromDate(Date dateFrom) {
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        df.setTimeZone(TimeZone.getTimeZone( "GMT-03:00" )); //Brazil :)
-        String date = df.format(dateFrom);
+        String date = Utils.toBrazilsLocalDate(dateFrom);
 
         Log.d("Date a ser buscada", date);
         Cursor cursor = sqlReadable.query(DatabaseDefinitions.Meditations.TABLE_NAME, null,
@@ -149,9 +148,7 @@ public class DatabaseDataManagement {
     }
 
     public HashMap<String, Parola> readLastParolas() {
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        df.setTimeZone(TimeZone.getTimeZone( "GMT-03:00" )); //Brazil :)
-        String today = df.format(Calendar.getInstance().getTime());
+        String today = Utils.getBrazilsLocalDate();
 
         Log.d("readLastParolas",  "buscando parolas da data " + today);
 

@@ -1,5 +1,15 @@
 package com.passaparola.thiagodesales.passaparolaview.activities;
 
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -24,8 +34,15 @@ import com.passaparola.thiagodesales.passaparolaview.listeners.MeditationListene
 import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
 import com.passaparola.thiagodesales.passaparolaview.utils.Utils;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
+
+
+//TODO Ao selecionar um idioma que não tem tradução da meditação, a lista está ficando incompleta na aba meditação. Só acontece em algumas situações...:/ Ir pra aba parola, selecionar um idioma, e voltar pra aba experiencias
+//TODO Adicionar o nome do autor do texto.
 
 public class NewPassaParola extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener, MeditationListener {
 
@@ -53,13 +70,10 @@ public class NewPassaParola extends AppCompatActivity implements View.OnClickLis
         idiomaList = buildAlert();
 
         chiara = findViewById(R.id.htab_header);
+
         setTopImage();
-    }
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
+        Log.d("onCreate", "onCreate chamado novamente!?");
 
         MyFragmentPagerAdapter pagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
 
@@ -73,37 +87,98 @@ public class NewPassaParola extends AppCompatActivity implements View.OnClickLis
 
         meditationListFragment = new MeditationListFragment(getApplicationContext(), "pt", this);
         pagerAdapter.addFragment(meditationListFragment, "Experiências");//TODO Internationalitions
-//        meditationListFragment.setCurrentParolaLanguage("pt");
 
         tabLayout = (TabLayout) findViewById(R.id.menuTab);
         final ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
         pager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(pager);
+    }
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
 
-                pager.setCurrentItem(tab.getPosition());
-                Log.d("selecionando tab", "onTabSelected: pos: " + tab.getPosition());
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-                switch (tab.getPosition()) {
-                    case 0:
-                        // TODO: 31/03/17
-                        break;
-                }
-            }
+        draw();
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
+//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//
+//                pager.setCurrentItem(tab.getPosition());
+//                Log.d("selecionando tab", "onTabSelected: pos: " + tab.getPosition());
+//
+//                switch (tab.getPosition()) {
+//                    case 0:
+//                        // TODO: 31/03/17
+//                        break;
+//                }
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//
+//            }
+//        });
+    }
 
-            }
+    private void draw() {
+//        Resources resources = getResources();
+//        float scale = resources.getDisplayMetrics().density;
+//
+//        Log.d("draw", "scale  = " + scale);
+//
+//        Bitmap bitmap = BitmapFactory.decodeResource(resources, R.drawable.background2);
+//
+//        android.graphics.Bitmap.Config bitmapConfig =   bitmap.getConfig();
+//        // set default bitmap config if none
+//        if(bitmapConfig == null) {
+//            bitmapConfig = android.graphics.Bitmap.Config.ARGB_8888;
+//        }
+//        // resource bitmaps are imutable,
+//        // so we need to convert it to mutable one
+//        bitmap = bitmap.copy(bitmapConfig, true);
+//
+//        Canvas canvas = new Canvas(bitmap);
+//        // new antialised Paint
+//        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+//        // text color - #3D3D3D
+//        paint.setColor(Color.rgb(110,110, 110));
+//        // text size in pixels
+//        paint.setTextSize((int) (25 * scale));
+//        // text shadow
+//        paint.setShadowLayer(1f, 0f, 1f, Color.DKGRAY);
+//
+//        // draw text to the Canvas center
+//        Rect bounds = new Rect();
+//        String name = "THIAGO THIAGO THIAGO bruno mesal adsfadf podjf asdpofja sdkfja sdfkja " +
+//                "sdlfkja sdlkfja sdlkfj asldkfj asldkjf alsjd flkajsd flkajs dflkajs dlfkjalakjsd " +
+//                "lfkajsd lkfj alsdkfja lskdjflkajsdflkajd laksdjf lkadsj flaksdjf lkasdj flkasdjf lkasdjf " +
+//                "lajsd flakdsjf lkasdj flkajs dlfkajs dlfkja sdlfkjas dlfkjas dlkfjalskdfj alskdjf laksdjflaksdjf" +
+//                "lskdfjg lskdjf; asjdlkfja sldkfjal sdkfjalsdkfjalksdjf asdf";
+//        paint.getTextBounds(name, 0, name.length(), bounds);
+//
+//        int x = (bitmap.getWidth() - bounds.width())/6;
+//        int y = (bitmap.getHeight() + bounds.height())/5;
+//
+//        Log.d("draw", "bitmap.getWidth()  = " + bitmap.getWidth());
+//        Log.d("draw", "bounds.width()  = " + bounds.width());
+//        Log.d("draw", "bitmap.getHeight()  = " + bitmap.getHeight());
+//        Log.d("draw", "bounds.height()  = " + bounds.height());
+//
+//        canvas.drawText(name, x * scale, y * scale, paint);
+//
+//        Log.d("draw", "x * scale  = " + (x * scale));
+//        Log.d("draw", "y * scale  = " + (y * scale));
+//
+//        chiara.setImageBitmap(bitmap);
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
 
-            }
-        });
     }
 
     private AlertDialog buildAlert() {
@@ -149,11 +224,12 @@ public class NewPassaParola extends AppCompatActivity implements View.OnClickLis
 
         if (meditationListFragment.isAdded())
             meditationListFragment.setCurrentParolaLanguage(languageId);
+        else Log.d("onItemClick", "meditationListFragment not added!");
 
         if (meditationFragment.isAdded()) {
             meditationFragment.setCurrentParolaLanguage(languageId);
             meditationFragment.requestMeditations();
-        }
+        } else Log.d("onItemClick", "meditationFragment not added!");
 
         idiomaList.hide();
     }

@@ -26,9 +26,7 @@ public class ParolaFragment extends Fragment implements ParolaListener {
     private TextView parolaDateTextView;
     private ImageView flagImageView;
     private View view;
-    private DatabaseDataManagement db;
     private String currentLanguageId;
-    private Connections connectionManager;
     private Context context;
     private Facade facade;
 
@@ -44,6 +42,7 @@ public class ParolaFragment extends Fragment implements ParolaListener {
 
         parolaPraseTextView = view.findViewById(R.id.parola_phrase_id);
         parolaDateTextView = view.findViewById(R.id.passa_parola_date_textview_id);
+        flagImageView = view.findViewById(R.id.flag);
 
         return view;
     }
@@ -51,10 +50,8 @@ public class ParolaFragment extends Fragment implements ParolaListener {
     @Override
     public void onStart() {
         super.onStart();
-
         facade = Facade.getInstance(this.context);
         facade.addParolaListerner(this);
-
         requestParola();
     }
 
@@ -63,6 +60,7 @@ public class ParolaFragment extends Fragment implements ParolaListener {
     }
 
     public void requestParola() {
+        Log.d("requestParola", "facade -> " + facade);
         HashMap<String, Parola> lastParolas = facade.readParolas();
 
         if (lastParolas.size() == 0 || lastParolas.get(currentLanguageId) == null) {
@@ -70,13 +68,16 @@ public class ParolaFragment extends Fragment implements ParolaListener {
         } else
             feedUI(lastParolas.get(currentLanguageId));
 
-        flagImageView = view.findViewById(R.id.flag);
-        flagImageView.setImageResource(getResources().getIdentifier(currentLanguageId, "drawable", getContext().getPackageName()));
     }
 
     private void feedUI(Parola parola) {
-        parolaDateTextView.setText(parola.getDate());
-        parolaPraseTextView.setText(parola.getParola());
+        if (parolaDateTextView != null && parolaPraseTextView != null) {
+            parolaDateTextView.setText(parola.getDate());
+            parolaPraseTextView.setText(parola.getParola());
+
+            Log.d("feedUI", "atualizando flags");
+            flagImageView.setImageResource(getResources().getIdentifier(currentLanguageId, "drawable", getContext().getPackageName()));
+        } else Log.d("feedUI", "nulos");
     }
 
     @Override

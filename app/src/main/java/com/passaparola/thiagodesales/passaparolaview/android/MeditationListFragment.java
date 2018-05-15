@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.passaparola.thiagodesales.passaparolaview.R;
 import com.passaparola.thiagodesales.passaparolaview.adapters.MeditationListAdapter;
@@ -69,46 +70,32 @@ public class MeditationListFragment extends Fragment implements MyOnOptionsClick
     @Override
     public void onStart() {
         super.onStart();
-        Log.d("onStart", "MeditationListFram started!");
         supportedLanguageList = Arrays.asList(getResources().getStringArray(R.array.supported_meditations));
-        Log.d("supportedLanguageList", "supportedLanguageList criada!");
         facade = Facade.getInstance(this.context);
         facade.addMeditationListeners(this);
         requestMeditations();
     }
 
-    @Override
-    public void onInflate(Context context, AttributeSet attrs, Bundle savedInstanceState) {
-        super.onInflate(context, attrs, savedInstanceState);
-
-        Log.d("onInflate", "onInflate started!");
-    }
-
     //TODO Está deixando a lista view vazia quando não há suporte ao idioma e vem NOVAS meditações de download
     public void setCurrentParolaLanguage(String languageId) {
-        this.languageId = languageId;
-
         if (supportedLanguageList.contains(languageId)) {
+            this.languageId = languageId;
             listAdapter.setCurrentParolaLanguage(languageId);
             meditationListRecyclerView.invalidate();
             meditationListRecyclerView.setAdapter(listAdapter);
             listAdapter.notifyDataSetChanged();
+        } else {
+            Toast.makeText(context, "Não há meditações disponível em " + languageId, Toast.LENGTH_LONG).show(); //TODO Internationalization
         }
 
     }
 
     public void requestMeditations() {
         ArrayList<RSSMeditationItem> localMeditationsList = facade.getAllMeditations();
-        Log.d("requestMeditations", "Numero retornado: " + localMeditationsList.size());
 
-        //TODO this is also at database. Must go to utils.
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        df.setTimeZone(TimeZone.getTimeZone( "GMT-03:00" )); //Brazil :)
-        String today = df.format(Calendar.getInstance().getTime());
-
+        String today = Utils.getBrazilsLocalDate();
         if (localMeditationsList.size() > 0 && !Utils.isFirstAfterSecond(today, localMeditationsList.get(0).getPublishedDate())) {
             Log.d("requestMeditations", "A primeira é " + localMeditationsList.get(0).getParolas().get("pt"));
-            Log.d("requestMeditations", "VERDADEIRAO");
             feedUI(localMeditationsList);
         } else {
             Log.d("requestMeditations", "baixando da internet");
@@ -134,7 +121,6 @@ public class MeditationListFragment extends Fragment implements MyOnOptionsClick
         ArrayList<RSSMeditationItem> meditationList = new ArrayList<>();
         meditationList.add(meditationItem);
         meditationListener.onNewMeditation(meditationList);
-
     }
 
     @Override
@@ -152,28 +138,4 @@ public class MeditationListFragment extends Fragment implements MyOnOptionsClick
         Log.d("onRead", "Compartilhar meditacao " + meditationItem.getPublishedDate());
     }
 
-    //    @Override
-//    public void onClick(View view) {
-//        int id = view.getId();
-//
-////
-//        switch (id) {
-//            case R.id.view_meditation_image_view:
-//                Log.d("onClick", "view_meditation_image_view");
-//                int meditationSelectedPosition = meditationListRecyclerView.getChildAdapterPosition(view);
-//                RSSMeditationItem selectedMeditation = meditationsList.get(meditationSelectedPosition);
-//                Log.d("onClick", "view sleecionada: " + selectedMeditation.getPublishedDate());
-//                break;
-//            case R.id.meditation_text_view:
-//                Log.d("onClick", "meditation_text_view");
-//                break;
-//            case R.id.share_meditation_image_view:
-//                Log.d("onClick", "share_meditation_image_view");
-//                break;
-//        }
-//
-////        int meditationSelectedPosition = meditationListRecyclerView.getChildAdapterPosition(view);
-////        RSSMeditationItem selectedMeditation = meditationsList.get(meditationSelectedPosition);
-//
-//    }
 }

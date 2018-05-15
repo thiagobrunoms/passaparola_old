@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
+import java.util.TimeZone;
 
 public class Utils {
 
@@ -32,6 +33,18 @@ public class Utils {
         } catch (ParseException e) {
             return false;
         }
+    }
+
+    public static String getBrazilsLocalDate() {
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        df.setTimeZone(TimeZone.getTimeZone( "GMT-03:00" )); //Brazil :)
+        return df.format(Calendar.getInstance().getTime());
+    }
+
+    public static String toBrazilsLocalDate(Date dateFrom) {
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        df.setTimeZone(TimeZone.getTimeZone( "GMT-03:00" )); //Brazil :)
+        return df.format(dateFrom);
     }
 
 }

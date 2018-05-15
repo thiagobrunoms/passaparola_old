@@ -33,6 +33,7 @@ public class Facade implements ConnectionResponseHandler {
         if (instance == null)
             instance = new Facade(context);
 
+        Log.d("Facade.getInstance", "facade = " + instance);
         return instance;
     }
 

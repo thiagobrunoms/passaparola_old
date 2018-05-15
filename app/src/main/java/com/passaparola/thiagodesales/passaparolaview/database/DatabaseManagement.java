@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class DatabaseManagement extends SQLiteOpenHelper {
 
-    private static final int VERSION = 2;
+    private static final int VERSION = 1;
     private static final String DATABASE_NAME = "passaparola.db";
 
     public DatabaseManagement(Context context) {
@@ -24,8 +24,5 @@ public class DatabaseManagement extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         Log.d("onUpgrade", "Adicionando tabela de parolas - newVersion " + newVersion);
-        if (newVersion == 2)
-            sqLiteDatabase.execSQL(DatabaseDefinitions.Parolas.SQL_CREATE_ENTRIES);
-
     }
 }

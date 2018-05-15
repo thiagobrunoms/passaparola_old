@@ -14,9 +14,8 @@ final class DatabaseDefinitions {
         public static String LANGUAGE = "language";
         public static String MEDITATION = "Meditation";
 
-        public static String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + "(" + Meditations._ID +
-                " INTEGER PRIMARY KEY AUTOINCREMENT, " + DATE + " text, " + PAROLA + " text, " + LANGUAGE + " text, " +
-                MEDITATION + " text)";
+        public static String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + "(" + DATE + " text, "
+                + PAROLA + " text, " + LANGUAGE + " text, " + MEDITATION + " text, PRIMARY KEY (" + DATE + ", " + LANGUAGE + ") )";
     }
 
     public static class Parolas implements BaseColumns {
@@ -25,8 +24,8 @@ final class DatabaseDefinitions {
         public static String PAROLA = "Parola";
         public static String LANGUAGE = "language";
 
-        public static String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + "(" + Meditations._ID +
-                " INTEGER PRIMARY KEY AUTOINCREMENT, " + DATE + " text, " + PAROLA + " text, " + LANGUAGE + " text)";
+        public static String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + "(" + DATE + " text, "
+                + PAROLA + " text, " + LANGUAGE + " text, PRIMARY KEY (" + DATE + ", " + LANGUAGE + ") )";
     }
 
 }
