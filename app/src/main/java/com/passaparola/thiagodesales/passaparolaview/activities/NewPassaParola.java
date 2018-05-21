@@ -1,5 +1,6 @@
 package com.passaparola.thiagodesales.passaparolaview.activities;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -73,8 +74,6 @@ public class NewPassaParola extends AppCompatActivity implements View.OnClickLis
 
         setTopImage();
 
-        Log.d("onCreate", "onCreate chamado novamente!?");
-
         MyFragmentPagerAdapter pagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
 
         parolaFragment = new ParolaFragment(getApplicationContext());
@@ -92,94 +91,12 @@ public class NewPassaParola extends AppCompatActivity implements View.OnClickLis
         final ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
         pager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(pager);
-    }
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        draw();
-
-//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//
-//                pager.setCurrentItem(tab.getPosition());
-//                Log.d("selecionando tab", "onTabSelected: pos: " + tab.getPosition());
-//
-//                switch (tab.getPosition()) {
-//                    case 0:
-//                        // TODO: 31/03/17
-//                        break;
-//                }
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//
-//            }
-//        });
-    }
-
-    private void draw() {
-//        Resources resources = getResources();
-//        float scale = resources.getDisplayMetrics().density;
-//
-//        Log.d("draw", "scale  = " + scale);
-//
-//        Bitmap bitmap = BitmapFactory.decodeResource(resources, R.drawable.background2);
-//
-//        android.graphics.Bitmap.Config bitmapConfig =   bitmap.getConfig();
-//        // set default bitmap config if none
-//        if(bitmapConfig == null) {
-//            bitmapConfig = android.graphics.Bitmap.Config.ARGB_8888;
-//        }
-//        // resource bitmaps are imutable,
-//        // so we need to convert it to mutable one
-//        bitmap = bitmap.copy(bitmapConfig, true);
-//
-//        Canvas canvas = new Canvas(bitmap);
-//        // new antialised Paint
-//        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-//        // text color - #3D3D3D
-//        paint.setColor(Color.rgb(110,110, 110));
-//        // text size in pixels
-//        paint.setTextSize((int) (25 * scale));
-//        // text shadow
-//        paint.setShadowLayer(1f, 0f, 1f, Color.DKGRAY);
-//
-//        // draw text to the Canvas center
-//        Rect bounds = new Rect();
-//        String name = "THIAGO THIAGO THIAGO bruno mesal adsfadf podjf asdpofja sdkfja sdfkja " +
-//                "sdlfkja sdlkfja sdlkfj asldkfj asldkjf alsjd flkajsd flkajs dflkajs dlfkjalakjsd " +
-//                "lfkajsd lkfj alsdkfja lskdjflkajsdflkajd laksdjf lkadsj flaksdjf lkasdj flkasdjf lkasdjf " +
-//                "lajsd flakdsjf lkasdj flkajs dlfkajs dlfkja sdlfkjas dlfkjas dlkfjalskdfj alskdjf laksdjflaksdjf" +
-//                "lskdfjg lskdjf; asjdlkfja sldkfjal sdkfjalsdkfjalksdjf asdf";
-//        paint.getTextBounds(name, 0, name.length(), bounds);
-//
-//        int x = (bitmap.getWidth() - bounds.width())/6;
-//        int y = (bitmap.getHeight() + bounds.height())/5;
-//
-//        Log.d("draw", "bitmap.getWidth()  = " + bitmap.getWidth());
-//        Log.d("draw", "bounds.width()  = " + bounds.width());
-//        Log.d("draw", "bitmap.getHeight()  = " + bitmap.getHeight());
-//        Log.d("draw", "bounds.height()  = " + bounds.height());
-//
-//        canvas.drawText(name, x * scale, y * scale, paint);
-//
-//        Log.d("draw", "x * scale  = " + (x * scale));
-//        Log.d("draw", "y * scale  = " + (y * scale));
-//
-//        chiara.setImageBitmap(bitmap);
-
+//        Intent intent = new Intent(getApplicationContext(), TesteAct.class);
+//        startActivity(intent);
 
     }
+
 
     private AlertDialog buildAlert() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);

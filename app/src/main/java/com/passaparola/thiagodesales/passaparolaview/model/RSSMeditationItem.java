@@ -7,6 +7,7 @@ public class RSSMeditationItem {
     private String publishedDate;
     private HashMap<String, String> parolas;
     private HashMap<String, String> meditations;
+    private String currentLanguageId;
 
     public RSSMeditationItem(String publishedDate, HashMap<String, String> parolas, HashMap<String, String> meditations) {
         this.publishedDate = publishedDate;
@@ -55,6 +56,14 @@ public class RSSMeditationItem {
 
     public String getMeditation(String language) {
         return this.meditations.get(language);
+    }
+
+    public void setCurrentParolaLanguage(String languageId) {
+        this.currentLanguageId = languageId;
+    }
+
+    public String getCurrentParolaLanguage() {
+        return currentLanguageId;
     }
 
     @Override

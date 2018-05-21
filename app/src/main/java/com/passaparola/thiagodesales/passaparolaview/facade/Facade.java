@@ -6,6 +6,7 @@ import android.util.Log;
 import com.passaparola.thiagodesales.passaparolaview.connection.ConnectionResponseHandler;
 import com.passaparola.thiagodesales.passaparolaview.connection.Connections;
 import com.passaparola.thiagodesales.passaparolaview.database.DatabaseDataManagement;
+import com.passaparola.thiagodesales.passaparolaview.files.FileManager;
 import com.passaparola.thiagodesales.passaparolaview.listeners.MeditationListener;
 import com.passaparola.thiagodesales.passaparolaview.listeners.ParolaListener;
 import com.passaparola.thiagodesales.passaparolaview.model.Parola;
@@ -19,12 +20,14 @@ import java.util.TimeZone;
 
 public class Facade implements ConnectionResponseHandler {
     private DatabaseDataManagement db;
+    private FileManager fileManager;
     private static Facade instance;
     private ArrayList<ParolaListener> parolaListeners;
     private ArrayList<MeditationListener> meditationListeners;
 
     private Facade(Context context) {
         db = DatabaseDataManagement.getInstance(context);
+        fileManager = FileManager.getInstance(context);
         parolaListeners = new ArrayList<>();
         meditationListeners = new ArrayList<>();
     }
@@ -107,5 +110,9 @@ public class Facade implements ConnectionResponseHandler {
         for (MeditationListener listener : meditationListeners) {
             listener.onNewMeditation(meditations);
         }
+    }
+
+    public void buildImageForSharing(RSSMeditationItem meditationItem) {
+        fileManager.drawPictureForFileSharing(meditationItem);
     }
 }

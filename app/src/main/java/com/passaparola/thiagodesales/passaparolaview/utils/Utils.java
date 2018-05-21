@@ -47,4 +47,8 @@ public class Utils {
         return df.format(dateFrom);
     }
 
+    public static int getCurrentMonth() {
+        return Calendar.getInstance().get(Calendar.MONTH);
+    }
+
 }

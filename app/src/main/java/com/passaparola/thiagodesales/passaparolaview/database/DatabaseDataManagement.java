@@ -3,6 +3,7 @@ package com.passaparola.thiagodesales.passaparolaview.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -63,7 +64,11 @@ public class DatabaseDataManagement {
             values.put(DatabaseDefinitions.Meditations.MEDITATION, meditations.get(supportedLanguages[i]));
 
             //TODO throw exception in case of status = -1?
-            status = sqlWriteable.insert(DatabaseDefinitions.Meditations.TABLE_NAME, null, values);
+            try {
+                status = sqlWriteable.insert(DatabaseDefinitions.Meditations.TABLE_NAME, null, values);
+            } catch (SQLiteConstraintException e) {
+                //Nothing to do if we try to insert an existed meditation.
+            }
 
             values.clear();
         }
@@ -143,8 +148,14 @@ public class DatabaseDataManagement {
         contentValues.put(DatabaseDefinitions.Parolas.LANGUAGE, parola.getLanguage());
         contentValues.put(DatabaseDefinitions.Parolas.PAROLA, parola.getParola());
 
-        long returnedId = sqlWriteable.insert(DatabaseDefinitions.Parolas.TABLE_NAME, null, contentValues);
-        Log.d("insertParola", "Id da parola " + returnedId);
+        try {
+            long returnedId = sqlWriteable.insert(DatabaseDefinitions.Parolas.TABLE_NAME, null, contentValues);
+            Log.d("insertParola", "Id da parola " + returnedId);
+        } catch (SQLiteConstraintException e) {
+            Log.d("insertParola", "Parola " + parola.getParola()  + " already stored!");
+        }
+
+
     }
 
     public HashMap<String, Parola> readLastParolas() {

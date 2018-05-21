@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.passaparola.thiagodesales.passaparolaview.facade.Facade;
 import com.passaparola.thiagodesales.passaparolaview.holders.MeditationItemHolder;
 import com.passaparola.thiagodesales.passaparolaview.R;
 import com.passaparola.thiagodesales.passaparolaview.listeners.MyOnOptionsClickListener;
@@ -19,6 +20,7 @@ public class MeditationListAdapter extends RecyclerView.Adapter<MeditationItemHo
     private MyOnOptionsClickListener clickListener;
     private String languageId;
     private RecyclerView recyclerView;
+    private Facade facade;
 
     public MeditationListAdapter(List<RSSMeditationItem> meditationList, MyOnOptionsClickListener clickListener, RecyclerView recyclerView, String languageId) {
         this.meditationList = meditationList;
@@ -43,7 +45,7 @@ public class MeditationListAdapter extends RecyclerView.Adapter<MeditationItemHo
         final RSSMeditationItem meditationItem = meditationList.get(position);
 
         holder.parolaDate.setText(meditationItem.getPublishedDate());
-        holder.parolaTitle.setText(meditationItem.getParola(languageId)); //TODO find out the current language
+        holder.parolaTitle.setText(meditationItem.getParola(languageId));
         holder.meditation.setText(meditationItem.getMeditation(languageId));
 
         holder.viewButton.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +61,7 @@ public class MeditationListAdapter extends RecyclerView.Adapter<MeditationItemHo
             public void onClick(View view) {
                 Log.d("Clicando", "Id = " + view.getId());
                 Log.d("Item selecionado", meditationItem.getPublishedDate());
+                meditationItem.setCurrentParolaLanguage(languageId);
                 clickListener.onShareMeditation(meditationItem);
             }
         });
