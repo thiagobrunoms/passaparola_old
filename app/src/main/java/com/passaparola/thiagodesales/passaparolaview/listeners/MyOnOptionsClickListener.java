@@ -1,6 +1,7 @@
 package com.passaparola.thiagodesales.passaparolaview.listeners;
 
 import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
+import com.passaparola.thiagodesales.passaparolaview.utils.Constants;
 
 public interface MyOnOptionsClickListener {
 

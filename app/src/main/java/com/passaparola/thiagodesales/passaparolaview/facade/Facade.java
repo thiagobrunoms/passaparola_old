@@ -1,8 +1,12 @@
 package com.passaparola.thiagodesales.passaparolaview.facade;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 
+import com.passaparola.thiagodesales.passaparolaview.R;
+import com.passaparola.thiagodesales.passaparolaview.activities.TesteAct;
 import com.passaparola.thiagodesales.passaparolaview.connection.ConnectionResponseHandler;
 import com.passaparola.thiagodesales.passaparolaview.connection.Connections;
 import com.passaparola.thiagodesales.passaparolaview.database.DatabaseDataManagement;
@@ -18,14 +22,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
 
+
 public class Facade implements ConnectionResponseHandler {
     private DatabaseDataManagement db;
     private FileManager fileManager;
     private static Facade instance;
     private ArrayList<ParolaListener> parolaListeners;
     private ArrayList<MeditationListener> meditationListeners;
+    private Context context;
 
     private Facade(Context context) {
+        this.context = context;
         db = DatabaseDataManagement.getInstance(context);
         fileManager = FileManager.getInstance(context);
         parolaListeners = new ArrayList<>();
@@ -113,6 +120,37 @@ public class Facade implements ConnectionResponseHandler {
     }
 
     public void buildImageForSharing(RSSMeditationItem meditationItem) {
-        fileManager.drawPictureForFileSharing(meditationItem);
+        Log.d("facade", "buildImageForSharing");
+        Uri uri = fileManager.drawPictureForFileSharing(meditationItem);
+        meditationItem.setLocalUri(uri);
     }
+
+    public void shareParola(RSSMeditationItem meditationItem) {
+        Log.d("facade", "shareParola para URI " + meditationItem.getLocalUri());
+//        Intent share = new Intent(context, TesteAct.class);
+//        share.putExtra("image", imageURI.toString());
+//        context.startActivity(share);
+
+        //shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Passa Parola");
+
+
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+
+        Uri uri = meditationItem.getLocalUri();
+        if (uri != null) {
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            shareIntent.setType("image/*");
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        } else {
+            String language = meditationItem.getCurrentParolaLanguage();
+            String finalText = context.getResources().getText(R.string.app_name) + " - " + meditationItem.getPublishedDate() + "\n" + meditationItem.getParola(language) + "\n" + meditationItem.getMeditation(language) + "\nApolônio de Carvalo. ";
+            shareIntent.putExtra(Intent.EXTRA_TEXT, finalText);
+            shareIntent.setType("text/plain");
+        }
+
+        context.startActivity(Intent.createChooser(shareIntent, "Share Passa parola")); //TODO Internationalization...
+    }
+
+
 }

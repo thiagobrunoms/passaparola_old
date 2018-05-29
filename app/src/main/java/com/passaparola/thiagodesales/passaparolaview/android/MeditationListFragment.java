@@ -1,6 +1,9 @@
 package com.passaparola.thiagodesales.passaparolaview.android;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.passaparola.thiagodesales.passaparolaview.R;
@@ -21,6 +25,7 @@ import com.passaparola.thiagodesales.passaparolaview.facade.Facade;
 import com.passaparola.thiagodesales.passaparolaview.listeners.MeditationListener;
 import com.passaparola.thiagodesales.passaparolaview.listeners.MyOnOptionsClickListener;
 import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
+import com.passaparola.thiagodesales.passaparolaview.utils.Constants;
 import com.passaparola.thiagodesales.passaparolaview.utils.Utils;
 
 import java.text.SimpleDateFormat;
@@ -30,7 +35,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-public class MeditationListFragment extends Fragment implements MyOnOptionsClickListener, MeditationListener {
+public class MeditationListFragment extends Fragment implements MyOnOptionsClickListener, MeditationListener, View.OnClickListener {
 
     private RecyclerView meditationListRecyclerView;
     private ArrayList<RSSMeditationItem> meditationsList;
@@ -40,6 +45,12 @@ public class MeditationListFragment extends Fragment implements MyOnOptionsClick
     private String languageId;
     private List<String> supportedLanguageList;
     private MeditationListener meditationListener;
+    private AlertDialog.Builder alertBuilder;
+    private AlertDialog shareDialog;
+    private Button shareTextButton;
+    private Button shareImageButton;
+    private RSSMeditationItem meditationItemSelected;
+
 
     public MeditationListFragment(Context context, String languageId, MeditationListener meditationListener) {
         this.context = context;
@@ -74,6 +85,13 @@ public class MeditationListFragment extends Fragment implements MyOnOptionsClick
         facade = Facade.getInstance(this.context);
         facade.addMeditationListeners(this);
         requestMeditations();
+
+        alertBuilder = new AlertDialog.Builder(getActivity());
+        alertBuilder.setCancelable(true);
+        alertBuilder.setView(getLayoutInflater().inflate(R.layout.share_options, null));
+        alertBuilder.setTitle("Forma de Compartilhamento");
+        shareDialog = alertBuilder.create();
+
     }
 
     //TODO Está deixando a lista view vazia quando não há suporte ao idioma e vem NOVAS meditações de download
@@ -136,6 +154,28 @@ public class MeditationListFragment extends Fragment implements MyOnOptionsClick
     @Override
     public void onShareMeditation(RSSMeditationItem meditationItem) {
         Log.d("onRead", "Compartilhar meditacao " + meditationItem.getPublishedDate());
+        this.meditationItemSelected = meditationItem;
+
+        shareDialog.show();
+        shareTextButton = (Button) shareDialog.findViewById(R.id.button_share_text);
+        shareTextButton.setOnClickListener(this);
+
+        shareImageButton = (Button) shareDialog.findViewById(R.id.button_share_image);
+        shareImageButton.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.button_share_text) {
+            meditationItemSelected.setLocalUri(null);
+            facade.shareParola(meditationItemSelected);
+            shareDialog.dismiss();
+        } else if (view.getId() == R.id.button_share_image) {
+            Log.d("onClick", "IMAGE");
+            facade.buildImageForSharing(meditationItemSelected);
+            facade.shareParola(meditationItemSelected);
+            shareDialog.dismiss();
+        }
     }
 
 }

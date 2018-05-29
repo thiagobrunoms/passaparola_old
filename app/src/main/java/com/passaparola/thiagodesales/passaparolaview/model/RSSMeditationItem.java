@@ -1,5 +1,7 @@
 package com.passaparola.thiagodesales.passaparolaview.model;
 
+import android.net.Uri;
+
 import java.util.HashMap;
 
 public class RSSMeditationItem {
@@ -8,6 +10,7 @@ public class RSSMeditationItem {
     private HashMap<String, String> parolas;
     private HashMap<String, String> meditations;
     private String currentLanguageId;
+    private Uri localUri;
 
     public RSSMeditationItem(String publishedDate, HashMap<String, String> parolas, HashMap<String, String> meditations) {
         this.publishedDate = publishedDate;
@@ -64,6 +67,14 @@ public class RSSMeditationItem {
 
     public String getCurrentParolaLanguage() {
         return currentLanguageId;
+    }
+
+    public void setLocalUri(Uri uri) {
+        this.localUri = uri;
+    }
+
+    public Uri getLocalUri() {
+        return localUri;
     }
 
     @Override

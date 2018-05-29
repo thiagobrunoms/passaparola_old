@@ -11,11 +11,11 @@ import java.util.TimeZone;
 
 public class Utils {
 
-    public static String sortChiaraImage() {
-        Random r = new Random();
-        int nextChiara = r.nextInt(9);
-        String str = "ch" + (nextChiara == 0 ? 1 : nextChiara);
-        return str;
+    public static String sortBackgroundForSharing() {
+//        Random r = new Random();
+//        int nextChiara = r.nextInt(14);
+//        return "background_parola_" + nextChiara;
+        return "background_parola_default";
     }
 
     //firstDate and secondDate on dd/MM/yyyy format

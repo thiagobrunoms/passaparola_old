@@ -11,12 +11,16 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.text.TextPaint;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.passaparola.thiagodesales.passaparolaview.BuildConfig;
 import com.passaparola.thiagodesales.passaparolaview.R;
 import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
+import com.passaparola.thiagodesales.passaparolaview.utils.Utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,13 +45,16 @@ public class FileManager {
         return instance;
     }
 
-    public void drawPictureForFileSharing(RSSMeditationItem meditationItem) {
+    public Uri drawPictureForFileSharing(RSSMeditationItem meditationItem) {
+        Log.d("drawPictureForFile", "Criando imagem para parola " + meditationItem.getParolas().get("pt"));
         Resources resources = context.getResources();
         float scale = resources.getDisplayMetrics().density;
 
-        Log.d("PictureForFileSharing", "scale: " + scale );
+        String backgroundName  = Utils.sortBackgroundForSharing();
+        Log.d("drawPict...", "Background sorteado: " + backgroundName);
+        int backgroundId = context.getResources().getIdentifier( backgroundName, "drawable", context.getPackageName());
 
-        Bitmap bitmap = BitmapFactory.decodeResource(resources, R.drawable.background4parola);
+        Bitmap bitmap = BitmapFactory.decodeResource(resources, backgroundId);
 
         android.graphics.Bitmap.Config bitmapConfig = bitmap.getConfig();
         bitmap = bitmap.copy(bitmapConfig, true);
@@ -58,34 +65,34 @@ public class FileManager {
         TextPaint textPaint = new TextPaint();
         textPaint.setTextSize(180);
         textPaint.setTextAlign(Paint.Align.LEFT);
-        textPaint.setColor(Color.rgb(219,139,255));
+        textPaint.setColor(Color.rgb(0,0,225));
         textPaint.setTypeface(Typeface.create("sans-serif-medium", Typeface.BOLD));
 
-        Calendar c = Calendar.getInstance();
-        String day = new Integer(c.get(Calendar.DATE)).toString();
+        String meditationPublishedDateParts[] = meditationItem.getPublishedDate().split("/");
+        String day = meditationPublishedDateParts[0];
         textPaint.getTextBounds(day, 0, day.length(), bounds);
-        float xConstant = (float) 34.2857142857;
+        float xConstant = (float) 77.2857142857;
         float yConstant = (float) 228.5714285714;
         canvas.drawText(day, scale * xConstant, scale * yConstant, textPaint);
 
         textPaint.setTextSize(100);
         textPaint.setTypeface(Typeface.create("Arial", Typeface.NORMAL));
 
-        String month = resources.getStringArray(R.array.months)[c.get(Calendar.MONTH)];
+        String month = resources.getStringArray(R.array.months)[Integer.valueOf(meditationPublishedDateParts[1])-1];
         textPaint.getTextBounds(month, 0, month.length(), bounds);
-        xConstant = (float) 118.0952380952;
-        yConstant = (float) 205.7142857143;
+        xConstant = (float) 80.0952380952;
+        yConstant = (float) 265.7142857143;
         canvas.drawText(month, scale * xConstant, scale * yConstant, textPaint);
 
-        String year = new Integer(c.get(Calendar.YEAR)).toString();
+        String year = meditationPublishedDateParts[2];
         textPaint.getTextBounds(year, 0, year.length(), bounds);
-        xConstant = (float) 118.0952380952;
-        yConstant = (float) 236.1904761905;
+        xConstant = (float) 80.0952380952;
+        yConstant = (float) 302.1904761905;
         canvas.drawText(year, scale * xConstant, scale * yConstant, textPaint);
         //-----------------------------------------------------
 
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(Color.rgb(255,255, 225));
+        paint.setColor(Color.rgb(0,0, 225));
         paint.setTextSize((int) (55 * scale));
         paint.setShadowLayer(1f, 0f, 1f, Color.DKGRAY);
 
@@ -93,7 +100,7 @@ public class FileManager {
         paint.getTextBounds(parola, 0, parola.length(), bounds);
 
         float constantLineSpace = (float) (scale * 49.5238095238);
-
+        float parolaY = 0;
         if (parola.length() <= 23) {
             xConstant = (float) 228.5714285714;
             yConstant = (float) 76.1904761905;
@@ -103,7 +110,7 @@ public class FileManager {
             int soma = 0;
             xConstant = (float) 228.5714285714;
             yConstant = (float) 53.3333333333;
-            float y = scale * yConstant;
+            parolaY = scale * yConstant;
             int end = 23;
             String lines = "";
 
@@ -113,14 +120,14 @@ public class FileManager {
                 if (soma <= end) {
                     lines = lines + partes[i] + " ";
                 } else {
-                    canvas.drawText(lines, scale * xConstant, y, paint);
-                    y = y + constantLineSpace;
+                    canvas.drawText(lines, scale * xConstant, parolaY, paint);
+                    parolaY = parolaY + constantLineSpace;
                     lines = partes[i] + " ";
                     soma = lines.length();
                 }
             }
 
-            canvas.drawText(lines, scale * xConstant, y, paint);
+            canvas.drawText(lines, scale * xConstant, parolaY, paint);
         }
 
         //---------------------------------------------
@@ -134,8 +141,8 @@ public class FileManager {
         String lines = "";
         int soma = 0;
         int end = 43;
-        yConstant = (float) 209.5238095238;
-        float y = scale * yConstant;
+//        yConstant = parolaY;
+        float y = parolaY + constantLineSpace + 180;
         for(int i = 0; i < partes.length; i++) {
             soma = soma + partes[i].length() + 1;
             if (soma <= end)
@@ -147,31 +154,28 @@ public class FileManager {
                 soma = lines.length();
             }
         }
+        Log.d("drawPictureFor...", "Total Y = " + y);
         canvas.drawText(lines, scale * xConstant, y, paint);
 
 //        ImageView imageView = (ImageView) context.findViewById(R.id.imageView6);
 //        imageView.setImageBitmap(bitmap);
 
+        Uri bmpUri = null;
+        File file = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "share_image_" + System.currentTimeMillis() + ".png");
+        FileOutputStream out = null;
         try {
-            ContextWrapper wrapper = new ContextWrapper(context);
-            File file = wrapper.getDir("Images", context.MODE_PRIVATE);
-            file = new File(file, "parola17"+".png");
+            out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.close();
 
-            OutputStream outputStream = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-            outputStream.flush();
-            outputStream.close();
-
-            Uri savedImageURI = Uri.parse(file.getAbsolutePath());
-
-            Log.d("draw", "Image saved in internal storage.\n" + savedImageURI);
-
+            bmpUri = FileProvider.getUriForFile(context, "com.passaparola.thiagodesales.passaparolaview", file);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //TODO
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //TODO
         }
 
+        return bmpUri;
     }
 
 }
