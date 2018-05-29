@@ -11,6 +11,7 @@ import com.passaparola.thiagodesales.passaparolaview.holders.MeditationItemHolde
 import com.passaparola.thiagodesales.passaparolaview.R;
 import com.passaparola.thiagodesales.passaparolaview.listeners.MyOnOptionsClickListener;
 import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
+import com.passaparola.thiagodesales.passaparolaview.utils.Constants;
 
 import java.util.List;
 

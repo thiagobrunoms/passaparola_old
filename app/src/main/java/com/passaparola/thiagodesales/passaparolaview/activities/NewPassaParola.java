@@ -1,16 +1,5 @@
 package com.passaparola.thiagodesales.passaparolaview.activities;
 
-import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -30,16 +19,12 @@ import com.passaparola.thiagodesales.passaparolaview.android.MeditationFragment;
 import com.passaparola.thiagodesales.passaparolaview.android.MeditationListFragment;
 import com.passaparola.thiagodesales.passaparolaview.adapters.MyFragmentPagerAdapter;
 import com.passaparola.thiagodesales.passaparolaview.android.ParolaFragment;
-import com.passaparola.thiagodesales.passaparolaview.database.DatabaseDataManagement;
 import com.passaparola.thiagodesales.passaparolaview.listeners.MeditationListener;
 import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
 import com.passaparola.thiagodesales.passaparolaview.utils.Utils;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 
 //TODO Ao selecionar um idioma que não tem tradução da meditação, a lista está ficando incompleta na aba meditação. Só acontece em algumas situações...:/ Ir pra aba parola, selecionar um idioma, e voltar pra aba experiencias
@@ -121,7 +106,7 @@ public class NewPassaParola extends AppCompatActivity implements View.OnClickLis
     }
 
     private void setTopImage() {
-        String chiaraId = Utils.sortChiaraImage();
+        String chiaraId = Utils.sortBackgroundForSharing();
         chiara.setImageResource(getResources().getIdentifier("ch2", "drawable", getPackageName()));
     }
 
@@ -136,8 +121,10 @@ public class NewPassaParola extends AppCompatActivity implements View.OnClickLis
         languageId = hashLangId.get(language);
         Log.d("Selecionado", language + " -> " + languageId);
 
-        parolaFragment.setCurrentParolaLanguage(languageId);
-        parolaFragment.requestParola();
+        if (parolaFragment.isAdded()) {
+            parolaFragment.setCurrentParolaLanguage(languageId);
+            parolaFragment.requestParola();
+        } else Log.d("onItemClick", "parolaFragment not added!");
 
         if (meditationListFragment.isAdded())
             meditationListFragment.setCurrentParolaLanguage(languageId);

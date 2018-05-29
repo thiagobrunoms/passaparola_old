@@ -143,12 +143,14 @@ public class MeditationListFragment extends Fragment implements MyOnOptionsClick
 
     @Override
     public void onReadExperiences(RSSMeditationItem meditationItem) {
-        Log.d("onRead", "Ler experiencias " + meditationItem.getPublishedDate());
+//        Log.d("onRead", "Ler experiencias " + meditationItem.getPublishedDate());
+        Toast.makeText(context, "Disponível a partir de Agosto/2018.", Toast.LENGTH_LONG).show(); //TODO Internationalization
     }
 
     @Override
     public void onWriteExperiences(RSSMeditationItem meditationItem) {
-        Log.d("onRead", "Escrever experiencias" + meditationItem.getPublishedDate());
+//        Log.d("onRead", "Escrever experiencias" + meditationItem.getPublishedDate());
+        Toast.makeText(context, "Disponível a partir de Agosto/2018.", Toast.LENGTH_LONG).show(); //TODO Internationalization
     }
 
     @Override
@@ -173,7 +175,13 @@ public class MeditationListFragment extends Fragment implements MyOnOptionsClick
         } else if (view.getId() == R.id.button_share_image) {
             Log.d("onClick", "IMAGE");
             facade.buildImageForSharing(meditationItemSelected);
-            facade.shareParola(meditationItemSelected);
+
+            if (meditationItemSelected.getLocalUri() != null)
+                facade.shareParola(meditationItemSelected);
+            else {
+                Toast.makeText(context, "Meditação muito extensa! Não é possível compartilhar imagem!", Toast.LENGTH_LONG).show(); //TODO Internationalization
+            }
+
             shareDialog.dismiss();
         }
     }
