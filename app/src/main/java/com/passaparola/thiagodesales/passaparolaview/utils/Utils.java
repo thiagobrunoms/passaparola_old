@@ -19,7 +19,6 @@ public class Utils {
     }
 
     //firstDate and secondDate on dd/MM/yyyy format
-    //TODO Testar se datas iguais está retornando verdadeiro.
     public static boolean isFirstAfterSecond(String firstDate, String secondDate) {
         Log.d("isFirstAfterSecond", "F = " + firstDate + " -  S = " + secondDate);
         Calendar calendar = Calendar.getInstance();
@@ -45,6 +44,12 @@ public class Utils {
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         df.setTimeZone(TimeZone.getTimeZone( "GMT-03:00" )); //Brazil :)
         return df.format(dateFrom);
+    }
+
+    public static String isoDateToStandardFormat(String isoDate) {
+        Log.d("isoDateToS", isoDate);
+        String dateParts[] = isoDate.split("T")[0].split("-");
+        return dateParts[2] + "/" + dateParts[1] + "/" + dateParts[0];
     }
 
     public static int getCurrentMonth() {

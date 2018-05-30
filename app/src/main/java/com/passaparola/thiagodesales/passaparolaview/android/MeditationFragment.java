@@ -13,6 +13,7 @@ import com.passaparola.thiagodesales.passaparolaview.R;
 import com.passaparola.thiagodesales.passaparolaview.facade.Facade;
 import com.passaparola.thiagodesales.passaparolaview.listeners.MeditationListener;
 import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
+import com.passaparola.thiagodesales.passaparolaview.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class MeditationFragment extends Fragment implements MeditationListener{
     private String languageId;
     private List<String> supportedLanguageList;
     private RSSMeditationItem meditation;
+    private String currentSupportedLanguageId;
 
 
 
@@ -69,10 +71,10 @@ public class MeditationFragment extends Fragment implements MeditationListener{
 
 
     public void requestMeditations() {
-        Log.d("requestMeditations", "Solicitando Meditations");
+        Log.d("MedFrag.requestMeditat", "Solicitando Meditations");
         RSSMeditationItem meditation = facade.readTodaysMeditation();
         if (meditation != null) {
-            Log.d("requestMeditations", "vai feedUI " + meditation);
+            Log.d("MedFrag.requestMeditat", "vai feedUI " + meditation);
             setMeditation(meditation);
         }
 
@@ -84,15 +86,16 @@ public class MeditationFragment extends Fragment implements MeditationListener{
     }
 
     public void feedUI() {
-        dateTextView.setText(meditation.getPublishedDate());//TODO Pode chegar a resposta da requisição sem ter montado a interface. Talvez na hora que chegar, colocar primeiro no BD
+        dateTextView.setText(Utils.isoDateToStandardFormat(meditation.getPublishedDate()));
 
         if (supportedLanguageList.contains(languageId)) {
             parolaTextView.setText(meditation.getParola(languageId)); //TODO w.r.t local language
-            meditationView.setText(meditation.getMeditation(languageId));//TODO w.r.t local language
+            meditationView.setText(meditation.getMeditation(languageId) + "\n Apolônio Carvalho Nascimento");//TODO w.r.t local language
+            currentSupportedLanguageId = languageId;
         } else {
             //TODO else generate warnning!?
-            parolaTextView.setText(meditation.getParola("pt")); //TODO w.r.t local language
-            meditationView.setText(meditation.getMeditation("pt"));//TODO w.r.t local language
+            parolaTextView.setText(meditation.getParola(currentSupportedLanguageId)); //TODO w.r.t local language
+            meditationView.setText(meditation.getMeditation(currentSupportedLanguageId));//TODO w.r.t local language
         }
     }
 

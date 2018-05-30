@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.passaparola.thiagodesales.passaparolaview.R;
-import com.passaparola.thiagodesales.passaparolaview.utils.Constants;
+import com.passaparola.thiagodesales.passaparolaview.utils.ConstantNames;
 import com.passaparola.thiagodesales.passaparolaview.utils.Utils;
 
 public class MeditationActivity extends AppCompatActivity {
@@ -38,7 +38,7 @@ public class MeditationActivity extends AppCompatActivity {
         });
 
         chiara = findViewById(R.id.imageView);
-        String chiaraId = Utils.sortChiaraImage();
+        String chiaraId = Utils.sortBackgroundForSharing();
         chiara.setImageResource(getResources().getIdentifier(chiaraId, "drawable", getPackageName()));
 
         publishedDateTextView = (TextView) findViewById(R.id.parola_date_text_view);
@@ -47,9 +47,9 @@ public class MeditationActivity extends AppCompatActivity {
 
         Intent thisIntent = getIntent();
         fillContent(
-                thisIntent.getStringExtra(Constants.PUBLISED_DATE.getConstantName()),
-                thisIntent.getStringExtra(Constants.PAROLA.getConstantName()),
-                thisIntent.getStringExtra(Constants.MEDITATION.getConstantName())
+                thisIntent.getStringExtra(ConstantNames.PUBLISED_DATE.getConstantName()),
+                thisIntent.getStringExtra(ConstantNames.PAROLA.getConstantName()),
+                thisIntent.getStringExtra(ConstantNames.MEDITATION.getConstantName())
         );
     }
 

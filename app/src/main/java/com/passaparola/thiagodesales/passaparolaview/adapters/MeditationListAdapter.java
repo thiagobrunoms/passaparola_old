@@ -12,6 +12,7 @@ import com.passaparola.thiagodesales.passaparolaview.R;
 import com.passaparola.thiagodesales.passaparolaview.listeners.MyOnOptionsClickListener;
 import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
 import com.passaparola.thiagodesales.passaparolaview.utils.Constants;
+import com.passaparola.thiagodesales.passaparolaview.utils.Utils;
 
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class MeditationListAdapter extends RecyclerView.Adapter<MeditationItemHo
     public void onBindViewHolder(MeditationItemHolder holder, final int position) {
         final RSSMeditationItem meditationItem = meditationList.get(position);
 
-        holder.parolaDate.setText(meditationItem.getPublishedDate());
+        holder.parolaDate.setText(Utils.isoDateToStandardFormat(meditationItem.getPublishedDate()));
         holder.parolaTitle.setText(meditationItem.getParola(languageId));
         holder.meditation.setText(meditationItem.getMeditation(languageId));
 

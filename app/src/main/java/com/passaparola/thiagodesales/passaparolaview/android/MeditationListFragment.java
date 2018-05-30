@@ -94,7 +94,6 @@ public class MeditationListFragment extends Fragment implements MyOnOptionsClick
 
     }
 
-    //TODO Está deixando a lista view vazia quando não há suporte ao idioma e vem NOVAS meditações de download
     public void setCurrentParolaLanguage(String languageId) {
         if (supportedLanguageList.contains(languageId)) {
             this.languageId = languageId;
@@ -103,7 +102,7 @@ public class MeditationListFragment extends Fragment implements MyOnOptionsClick
             meditationListRecyclerView.setAdapter(listAdapter);
             listAdapter.notifyDataSetChanged();
         } else {
-            Toast.makeText(context, "Não há meditações disponível em " + languageId, Toast.LENGTH_LONG).show(); //TODO Internationalization
+            Toast.makeText(context, context.getString(R.string.not_available_for_language) + context.getString(context.getResources().getIdentifier(languageId, "string", context.getPackageName())), Toast.LENGTH_LONG).show();
         }
 
     }
@@ -112,7 +111,7 @@ public class MeditationListFragment extends Fragment implements MyOnOptionsClick
         ArrayList<RSSMeditationItem> localMeditationsList = facade.getAllMeditations();
 
         String today = Utils.getBrazilsLocalDate();
-        if (localMeditationsList.size() > 0 && !Utils.isFirstAfterSecond(today, localMeditationsList.get(0).getPublishedDate())) {
+        if (localMeditationsList.size() > 0 && !Utils.isFirstAfterSecond(today, Utils.isoDateToStandardFormat(localMeditationsList.get(0).getPublishedDate()))) {
             Log.d("requestMeditations", "A primeira é " + localMeditationsList.get(0).getParolas().get("pt"));
             feedUI(localMeditationsList);
         } else {
@@ -144,13 +143,13 @@ public class MeditationListFragment extends Fragment implements MyOnOptionsClick
     @Override
     public void onReadExperiences(RSSMeditationItem meditationItem) {
 //        Log.d("onRead", "Ler experiencias " + meditationItem.getPublishedDate());
-        Toast.makeText(context, "Disponível a partir de Agosto/2018.", Toast.LENGTH_LONG).show(); //TODO Internationalization
+        Toast.makeText(context, getString(R.string.future_features), Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onWriteExperiences(RSSMeditationItem meditationItem) {
 //        Log.d("onRead", "Escrever experiencias" + meditationItem.getPublishedDate());
-        Toast.makeText(context, "Disponível a partir de Agosto/2018.", Toast.LENGTH_LONG).show(); //TODO Internationalization
+        Toast.makeText(context, getString(R.string.future_features), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -179,7 +178,7 @@ public class MeditationListFragment extends Fragment implements MyOnOptionsClick
             if (meditationItemSelected.getLocalUri() != null)
                 facade.shareParola(meditationItemSelected);
             else {
-                Toast.makeText(context, "Meditação muito extensa! Não é possível compartilhar imagem!", Toast.LENGTH_LONG).show(); //TODO Internationalization
+                Toast.makeText(context, getString(R.string.long_meditation_text_warnning), Toast.LENGTH_LONG).show();
             }
 
             shareDialog.dismiss();

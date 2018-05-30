@@ -26,9 +26,11 @@ import com.passaparola.thiagodesales.passaparolaview.utils.Utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-//TODO Ao selecionar um idioma que não tem tradução da meditação, a lista está ficando incompleta na aba meditação. Só acontece em algumas situações...:/ Ir pra aba parola, selecionar um idioma, e voltar pra aba experiencias
-//TODO Adicionar o nome do autor do texto.
+// ./adb devices
+//./adb -s DEVICE shell
+//run-as com.passaparola.thiagodesales.passaparolaview
+//cd /data/data/com.passaparola.thiagodesales.passaparolaview/databases/
+//sqlite3 passaparola.db
 
 public class NewPassaParola extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener, MeditationListener {
 
@@ -62,15 +64,15 @@ public class NewPassaParola extends AppCompatActivity implements View.OnClickLis
         MyFragmentPagerAdapter pagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
 
         parolaFragment = new ParolaFragment(getApplicationContext());
-        pagerAdapter.addFragment(parolaFragment, "Parola"); //TODO Internationalitions
+        pagerAdapter.addFragment(parolaFragment, getString(R.string.parola));
         parolaFragment.setCurrentParolaLanguage("pt");
 
         meditationFragment = new MeditationFragment();
-        pagerAdapter.addFragment(meditationFragment, "Meditação"); //TODO Internationalitions
+        pagerAdapter.addFragment(meditationFragment, getString(R.string.title_activity_meditation));
         meditationFragment.setCurrentParolaLanguage("pt");
 
         meditationListFragment = new MeditationListFragment(getApplicationContext(), "pt", this);
-        pagerAdapter.addFragment(meditationListFragment, "Experiências");//TODO Internationalitions
+        pagerAdapter.addFragment(meditationListFragment, getString(R.string.experiences));
 
         tabLayout = (TabLayout) findViewById(R.id.menuTab);
         final ViewPager pager = (ViewPager) findViewById(R.id.viewPager);

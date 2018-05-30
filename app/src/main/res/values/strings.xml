@@ -1,28 +1,29 @@
 <resources>
     <string name="app_name">Passa Parola - Focolare</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_meditation">Meditação</string>
-    <string name="share_text">Texto</string>
-    <string name="share_image">Imagem</string>
+    <string name="parola">Parola</string>
+    <string name="title_activity_meditation">Meditation</string>
+    <string name="share_text">Text</string>
+    <string name="share_image">Image</string>
     <string name="title_activity_new_passa_parola">Passa Parola</string>
-    <string name="title_activity_teste">teste</string>
-
-    <string name="no_parola_for_today">Ainda não há parola para hoje!</string>
-    <string name="no_meditation_for_today">Ainda não há meditação para hoje!</string>
-
-    <string name="language">Idiomas</string>
-    <string name="pt">Português</string>
-    <string name="en">Inglês</string>
-    <string name="it">Italiano</string>
-    <string name="es">Espanhol</string>
-
-
-    <string name="fr">Francês</string>
-    <string name="de">Alemão</string>
-
-    <string name="nl">Holandês</string>
-    <string name="ar">Árabe</string>
-    <string name="ro">Romeno</string>
+    <string name="experiences">Experiences</string>
+    <string name="author">By: Apolônio Carvalho Nascimento</string>
+    <string name="no_parola_for_today">Not written yet for today!</string>
+    <string name="no_meditation_for_today">Not written yet for today!</string>
+    <string name="not_available_for_language">Meditations not available in</string>
+    <string name="future_features">Available in August, 2018!</string>
+    <string name="long_meditation_text_warnning">Long meditation text! Not possible to share meditation image!</string>
+    <string name="share_passaparola_title">Share Passa Parola</string>
+    <string name="language">Languages</string>
+    <string name="pt">Portuguese</string>
+    <string name="en">English</string>
+    <string name="it">Italian</string>
+    <string name="es">Spanish</string>
+    <string name="fr">French</string>
+    <string name="de">Germany</string>
+    <string name="nl">Dutch</string>
+    <string name="ar">Arabic</string>
+    <string name="ro">Romanian</string>
 
 
     <array name="languages_list">

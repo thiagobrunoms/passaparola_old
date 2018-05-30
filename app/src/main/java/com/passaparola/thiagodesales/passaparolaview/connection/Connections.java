@@ -99,6 +99,7 @@ public class Connections extends AsyncTask<String, Integer, String> {
                     xmlPullParser.nextTag();
                 }
 
+                Log.d("Connections", "name: " + name);
                 if (name.equalsIgnoreCase("title")) {
                     parola = result;
                 } else if (name.equalsIgnoreCase("content")) {
@@ -122,8 +123,8 @@ public class Connections extends AsyncTask<String, Integer, String> {
                             meditations.put("pt", meditationPtIt[0].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
                             meditations.put("it", meditationPtIt[1].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
 
-                            String dateParts[] = publishedDate.split("T")[0].split("-");
-                            publishedDate = dateParts[2] + "/" + dateParts[1] + "/" + dateParts[0];
+//                            String dateParts[] = publishedDate.split("T")[0].split("-");
+//                            publishedDate = dateParts[2] + "/" + dateParts[1] + "/" + dateParts[0];
 
                             RSSMeditationItem item = new RSSMeditationItem(publishedDate, parolas, meditations);
                             Log.d("MEDITAÇÃO COMPLETA", item.toString());

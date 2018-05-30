@@ -58,12 +58,11 @@ public class DatabaseDataManagement {
         String date = meditation.getPublishedDate();
         long status;
         for (int i = 0; i < supportedLanguages.length; i++) {
-            values.put(DatabaseDefinitions.Meditations.DATE, date); //TODO Is it necessary?
+            values.put(DatabaseDefinitions.Meditations.DATE, date);
             values.put(DatabaseDefinitions.Meditations.LANGUAGE, supportedLanguages[i]);
             values.put(DatabaseDefinitions.Meditations.PAROLA, parolas.get(supportedLanguages[i]));
             values.put(DatabaseDefinitions.Meditations.MEDITATION, meditations.get(supportedLanguages[i]));
 
-            //TODO throw exception in case of status = -1?
             try {
                 status = sqlWriteable.insert(DatabaseDefinitions.Meditations.TABLE_NAME, null, values);
             } catch (SQLiteConstraintException e) {
@@ -86,7 +85,7 @@ public class DatabaseDataManagement {
     public ArrayList<RSSMeditationItem> readAllMeditations() {
         Log.d("readAllMeditations", "Lendo todas as meditações");
         Cursor cursor = sqlReadable.query(DatabaseDefinitions.Meditations.TABLE_NAME, null, null, null, null, null, "date(" + DatabaseDefinitions.Meditations.DATE + ")" +
-                OrderDirection.ASC.name());
+                OrderDirection.DESC.name());
 
         ArrayList<RSSMeditationItem> meditations = new ArrayList<>();
         Log.d("readAllMeditations", "getCount = " + cursor.getCount());
@@ -117,14 +116,20 @@ public class DatabaseDataManagement {
     }
 
     public RSSMeditationItem readMeditationFromDate(Date dateFrom) {
-        String date = Utils.toBrazilsLocalDate(dateFrom);
+//        String date = Utils.toBrazilsLocalDate(dateFrom);
 
-        Log.d("Date a ser buscada", date);
-        Cursor cursor = sqlReadable.query(DatabaseDefinitions.Meditations.TABLE_NAME, null,
-                DatabaseDefinitions.Meditations.DATE + " = ?", new String[]{date}, null, null,
-                null, null);
+        Log.d("Date a ser buscada", dateFrom.toString());
+//        Cursor cursor = sqlReadable.query(DatabaseDefinitions.Meditations.TABLE_NAME, null,
+//                DatabaseDefinitions.Meditations.DATE + " = ?", new String[]{dateFrom}, null, null,
+//                null, null);
+//        String query = "SELECT * from " + DatabaseDefinitions.Meditations.TABLE_NAME + " where date like ?";
+
+        String query = "SELECT * from " + DatabaseDefinitions.Meditations.TABLE_NAME + " where date like ?";
+        Cursor cursor = sqlReadable.rawQuery(query,
+                new String[]{new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime())+"%"} );
 
         RSSMeditationItem meditationItem = null;
+        Log.d("readMeditationFromDate", "R: para" + dateFrom + " -> " + cursor.getCount() );
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             meditationItem = new RSSMeditationItem();

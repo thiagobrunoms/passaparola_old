@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">Passa Parola - Focolare</string>
+    <string name="action_settings">Configurações</string>
+    <string name="title_activity_meditation">Meditação</string>
+    <string name="share_text">Texto</string>
+    <string name="share_image">Imagem</string>
+    <string name="title_activity_new_passa_parola">Passa Parola</string>
+    <string name="experiences">Experiências</string>
+    <string name="author">Por: Apolônio Carvalho Nascimento</string>
+    <string name="no_parola_for_today">Ainda não há parola para hoje!</string>
+    <string name="no_meditation_for_today">Ainda não há meditação para hoje!</string>
+    <string name="not_available_for_language">Meditações não disponíveis em</string>
+    <string name="future_features">Disponível a partir de Agosto, 2018!</string>
+    <string name="long_meditation_text_warnning">Meditação muito extensa! Não é possível compartilhar imagem!</string>
+    <string name="share_passaparola_title">Compartilhar Passa Parola</string>
+    <string name="language">Idiomas</string>
+    <string name="pt">Português</string>
+    <string name="en">Inglês</string>
+    <string name="it">Italiano</string>
+    <string name="es">Espanhol</string>
+    <string name="fr">Francês</string>
+    <string name="de">Alemão</string>
+    <string name="nl">Holandês</string>
+    <string name="ar">Árabe</string>
+    <string name="ro">Romeno</string>
+
+
+    <array name="languages_list">
+        <item>@string/pt</item>
+        <item>@string/it</item>
+        <item>@string/en</item>
+        <item>@string/de</item>
+        <item>@string/es</item>
+        <item>@string/fr</item>
+        <item>@string/nl</item>
+        <item>@string/ar</item>
+        <item>@string/ro</item>
+    </array>
+
+    <array name="language_id_list">
+        <item>pt</item>
+        <item>it</item>
+        <item>en</item>
+        <item>de</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>nl</item>
+        <item>ar</item>
+        <item>ro</item>
+    </array>
+
+    <array name="supported_meditations">
+        <item>pt</item>
+        <item>it</item>
+    </array>
+
+    <string-array name="months">
+        <item>JAN</item>
+        <item>FEV</item>
+        <item>MAR</item>
+        <item>ABR</item>
+        <item>MAI</item>
+        <item>JUN</item>
+        <item>JUL</item>
+        <item>AGO</item>
+        <item>SET</item>
+        <item>OUT</item>
+        <item>NOV</item>
+        <item>DEZ</item>
+    </string-array>
+
+</resources>

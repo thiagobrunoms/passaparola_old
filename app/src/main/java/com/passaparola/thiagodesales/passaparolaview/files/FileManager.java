@@ -16,6 +16,7 @@ import android.support.v4.content.FileProvider;
 import android.text.TextPaint;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.passaparola.thiagodesales.passaparolaview.BuildConfig;
 import com.passaparola.thiagodesales.passaparolaview.R;
@@ -73,7 +74,7 @@ public class FileManager {
             textPaint.setColor(Color.rgb(0,0,225));
             textPaint.setTypeface(Typeface.create("sans-serif-medium", Typeface.BOLD));
 
-            String meditationPublishedDateParts[] = meditationItem.getPublishedDate().split("/");
+            String meditationPublishedDateParts[] = Utils.isoDateToStandardFormat(meditationItem.getPublishedDate()).split("/");
             String day = meditationPublishedDateParts[0];
             textPaint.getTextBounds(day, 0, day.length(), bounds);
             float xConstant = (float) 77.2857142857;
@@ -173,9 +174,9 @@ public class FileManager {
 
                 bmpUri = FileProvider.getUriForFile(context, "com.passaparola.thiagodesales.passaparolaview", file);
             } catch (FileNotFoundException e) {
-                e.printStackTrace(); //TODO
+                Toast.makeText(context, "Erro ao gerar imagem. Tente compartilhar apenas texto!", Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
-                e.printStackTrace(); //TODO
+                Toast.makeText(context, "Erro ao gerar imagem. Tente compartilhar apenas texto!", Toast.LENGTH_SHORT).show();
             }
 
             return bmpUri;
