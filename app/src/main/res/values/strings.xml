@@ -14,6 +14,7 @@
     <string name="future_features">Available in August, 2018!</string>
     <string name="long_meditation_text_warnning">Long meditation text! Not possible to share meditation image!</string>
     <string name="share_passaparola_title">Share Passa Parola</string>
+
     <string name="language">Languages</string>
     <string name="pt">Portuguese</string>
     <string name="en">English</string>
@@ -24,6 +25,21 @@
     <string name="nl">Dutch</string>
     <string name="ar">Arabic</string>
     <string name="ro">Romanian</string>
+
+    <string-array name="months">
+        <item>JAN</item>
+        <item>FEB</item>
+        <item>MAR</item>
+        <item>APR</item>
+        <item>MAY</item>
+        <item>JUN</item>
+        <item>JUL</item>
+        <item>AUG</item>
+        <item>SEP</item>
+        <item>OCT</item>
+        <item>NOV</item>
+        <item>DEC</item>
+    </string-array>
 
 
     <array name="languages_list">
@@ -55,19 +71,5 @@
         <item>it</item>
     </array>
 
-    <string-array name="months">
-        <item>JAN</item>
-        <item>FEV</item>
-        <item>MAR</item>
-        <item>ABR</item>
-        <item>MAI</item>
-        <item>JUN</item>
-        <item>JUL</item>
-        <item>AGO</item>
-        <item>SET</item>
-        <item>OUT</item>
-        <item>NOV</item>
-        <item>DEZ</item>
-    </string-array>
 
 </resources>

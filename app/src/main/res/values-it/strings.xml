@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">Passa Parola - Focolari</string>
+    <string name="action_settings">Impostazioni</string>
+    <string name="title_activity_meditation">Meditazione</string>
+    <string name="share_text">Testo</string>
+    <string name="share_image">Imagine</string>
+    <string name="title_activity_new_passa_parola">Passa Parola</string>
+    <string name="experiences">Esperienze</string>
+    <string name="author">Da: Apolônio Carvalho Nascimento</string>
+    <string name="no_parola_for_today">Non c\'è ancora spazio per oggi!</string>
+    <string name="no_meditation_for_today">Non c\'è ancora meditazione per oggi!</string>
+    <string name="not_available_for_language">Meditazioni non disponibili in</string>
+    <string name="future_features">Disponibile da agosto, 2018!</string>
+    <string name="long_meditation_text_warnning">Meditazione molto estesa! Impossibile condividere l\'immagine!</string>
+    <string name="share_passaparola_title">Condividi la Passa Parola</string>
+    <string name="language">Lingue</string>
+    <string name="pt">Portoghese</string>
+    <string name="en">Inglese</string>
+    <string name="it">Italiano</string>
+    <string name="es">Spangnolo</string>
+    <string name="fr">Francese</string>
+    <string name="de">Alemán</string>
+    <string name="nl">Neerlandese</string>
+    <string name="ar">Arabo</string>
+    <string name="ro">Romeno</string>
+
+    <string-array name="months">
+        <item>GEN</item>
+        <item>FEB</item>
+        <item>MAR</item>
+        <item>APR</item>
+        <item>MAG</item>
+        <item>GIU</item>
+        <item>LUG</item>
+        <item>AGO</item>
+        <item>SET</item>
+        <item>OTT</item>
+        <item>NOV</item>
+        <item>DIC</item>
+    </string-array>
+
+</resources>

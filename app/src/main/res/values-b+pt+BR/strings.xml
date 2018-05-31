@@ -13,6 +13,7 @@
     <string name="future_features">Disponível a partir de Agosto, 2018!</string>
     <string name="long_meditation_text_warnning">Meditação muito extensa! Não é possível compartilhar imagem!</string>
     <string name="share_passaparola_title">Compartilhar Passa Parola</string>
+
     <string name="language">Idiomas</string>
     <string name="pt">Português</string>
     <string name="en">Inglês</string>
@@ -23,36 +24,6 @@
     <string name="nl">Holandês</string>
     <string name="ar">Árabe</string>
     <string name="ro">Romeno</string>
-
-
-    <array name="languages_list">
-        <item>@string/pt</item>
-        <item>@string/it</item>
-        <item>@string/en</item>
-        <item>@string/de</item>
-        <item>@string/es</item>
-        <item>@string/fr</item>
-        <item>@string/nl</item>
-        <item>@string/ar</item>
-        <item>@string/ro</item>
-    </array>
-
-    <array name="language_id_list">
-        <item>pt</item>
-        <item>it</item>
-        <item>en</item>
-        <item>de</item>
-        <item>es</item>
-        <item>fr</item>
-        <item>nl</item>
-        <item>ar</item>
-        <item>ro</item>
-    </array>
-
-    <array name="supported_meditations">
-        <item>pt</item>
-        <item>it</item>
-    </array>
 
     <string-array name="months">
         <item>JAN</item>
