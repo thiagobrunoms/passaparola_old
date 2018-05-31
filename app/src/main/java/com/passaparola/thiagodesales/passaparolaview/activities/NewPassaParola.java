@@ -24,13 +24,19 @@ import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
 import com.passaparola.thiagodesales.passaparolaview.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Vector;
 
 // ./adb devices
 //./adb -s DEVICE shell
 //run-as com.passaparola.thiagodesales.passaparolaview
 //cd /data/data/com.passaparola.thiagodesales.passaparolaview/databases/
 //sqlite3 passaparola.db
+
+//TODO Generate notification when new meditation available
 
 public class NewPassaParola extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener, MeditationListener {
 
@@ -59,19 +65,25 @@ public class NewPassaParola extends AppCompatActivity implements View.OnClickLis
 
         chiara = findViewById(R.id.htab_header);
 
-        setTopImage();
+        chiara.setImageResource(getResources().getIdentifier("ch2", "drawable", getPackageName()));
+
+        String localLanguage = Locale.getDefault().getLanguage();
+        List<String> supportedParolaLanguages = Arrays.asList(getResources().getStringArray(R.array.language_id_list));
+        List<String> supportedMeditationLanguages = Arrays.asList(getResources().getStringArray(R.array.supported_meditations));
+        boolean supportsParolaLanguage = supportedParolaLanguages.contains(localLanguage);
+        boolean supportsMeditationLanguage = supportedMeditationLanguages.contains(localLanguage);
 
         MyFragmentPagerAdapter pagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
 
         parolaFragment = new ParolaFragment(getApplicationContext());
         pagerAdapter.addFragment(parolaFragment, getString(R.string.parola));
-        parolaFragment.setCurrentParolaLanguage("pt");
+        parolaFragment.setCurrentParolaLanguage(supportsParolaLanguage ? localLanguage : getString(R.string.default_language));
 
         meditationFragment = new MeditationFragment();
         pagerAdapter.addFragment(meditationFragment, getString(R.string.title_activity_meditation));
-        meditationFragment.setCurrentParolaLanguage("pt");
+        meditationFragment.setCurrentParolaLanguage(supportsMeditationLanguage ? localLanguage : getString(R.string.default_language));
 
-        meditationListFragment = new MeditationListFragment(getApplicationContext(), "pt", this);
+        meditationListFragment = new MeditationListFragment(getApplicationContext(), supportsMeditationLanguage ? localLanguage : getString(R.string.default_language), this);
         pagerAdapter.addFragment(meditationListFragment, getString(R.string.experiences));
 
         tabLayout = (TabLayout) findViewById(R.id.menuTab);
@@ -105,11 +117,6 @@ public class NewPassaParola extends AppCompatActivity implements View.OnClickLis
         listView.setAdapter(arrayAdapter);
         listView.setOnItemClickListener(this);
         return dialog.create();
-    }
-
-    private void setTopImage() {
-        String chiaraId = Utils.sortBackgroundForSharing();
-        chiara.setImageResource(getResources().getIdentifier("ch2", "drawable", getPackageName()));
     }
 
     @Override
