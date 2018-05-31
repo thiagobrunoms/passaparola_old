@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">Passa Parola - Focolare</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="title_activity_meditation">Meditación</string>
+    <string name="share_text">Texto</string>
+    <string name="share_image">Imagen</string>
+    <string name="title_activity_new_passa_parola">Passa Parola</string>
+    <string name="experiences">Experiencias</string>
+    <string name="author">Por: Apolônio Carvalho Nascimento</string>
+    <string name="no_parola_for_today">Todavía no hay parola para hoy!</string>
+    <string name="no_meditation_for_today">Todavía no hay meditación para hoy!</string>
+    <string name="not_available_for_language">No está disponible meditaciones en </string>
+    <string name="future_features">Disponible a partir de Agosto, 2018!</string>
+    <string name="long_meditation_text_warnning">¡Meditación muy extensa! No se puede compartir la imagen!</string>
+    <string name="share_passaparola_title">Compartir Passa Parola</string>
+
+    <string name="language">Idiomas</string>
+    <string name="pt">Portugués</string>
+    <string name="en">Inglés</string>
+    <string name="it">Italiano</string>
+    <string name="es">Español</string>
+    <string name="fr">Francés</string>
+    <string name="de">Alemania</string>
+    <string name="nl">Holandés</string>
+    <string name="ar">Árabe</string>
+    <string name="ro">Rumano</string>
+
+    <string-array name="months">
+        <item>ENE</item>
+        <item>FEB</item>
+        <item>MAR</item>
+        <item>ABR</item>
+        <item>MAY</item>
+        <item>JUN</item>
+        <item>JUL</item>
+        <item>AGO</item>
+        <item>SEP</item>
+        <item>OCT</item>
+        <item>NOV</item>
+        <item>DIC</item>
+    </string-array>
+
+</resources>
