@@ -71,7 +71,7 @@ public class ParolaFragment extends Fragment implements ParolaListener {
     }
 
     private void feedUI(Parola parola) {
-        if (parolaDateTextView != null && parolaPraseTextView != null) {
+        if (this.isAdded() && parolaDateTextView != null && parolaPraseTextView != null) {
             parolaDateTextView.setText(parola.getDate());
             parolaPraseTextView.setText(parola.getParola());
 

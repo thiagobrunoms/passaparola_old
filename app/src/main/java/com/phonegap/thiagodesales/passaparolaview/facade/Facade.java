@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.passaparola.thiagodesales.passaparolaview.R;
-import com.passaparola.thiagodesales.passaparolaview.activities.TesteAct;
 import com.passaparola.thiagodesales.passaparolaview.connection.ConnectionResponseHandler;
 import com.passaparola.thiagodesales.passaparolaview.connection.Connections;
 import com.passaparola.thiagodesales.passaparolaview.database.DatabaseDataManagement;
@@ -15,6 +14,7 @@ import com.passaparola.thiagodesales.passaparolaview.listeners.MeditationListene
 import com.passaparola.thiagodesales.passaparolaview.listeners.ParolaListener;
 import com.passaparola.thiagodesales.passaparolaview.model.Parola;
 import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
+import com.passaparola.thiagodesales.passaparolaview.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -127,12 +127,6 @@ public class Facade implements ConnectionResponseHandler {
 
     public void shareParola(RSSMeditationItem meditationItem) {
         Log.d("facade", "shareParola para URI " + meditationItem.getLocalUri());
-//        Intent share = new Intent(context, TesteAct.class);
-//        share.putExtra("image", imageURI.toString());
-//        context.startActivity(share);
-
-        //shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Passa Parola");
-
 
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
@@ -144,7 +138,7 @@ public class Facade implements ConnectionResponseHandler {
             shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         } else {
             String language = meditationItem.getCurrentParolaLanguage();
-            String finalText = context.getResources().getText(R.string.app_name) + " - " + meditationItem.getPublishedDate() + "\n" + meditationItem.getParola(language) + "\n" + meditationItem.getMeditation(language) + "\nApolônio de Carvalo. ";
+            String finalText = context.getResources().getText(R.string.app_name) + " - " + Utils.isoDateToStandardFormat(meditationItem.getPublishedDate()) + "\n" + meditationItem.getParola(language) + "\n" + meditationItem.getMeditation(language) + "\nApolônio de Carvalo. ";
             shareIntent.putExtra(Intent.EXTRA_TEXT, finalText);
             shareIntent.setType("text/plain");
         }

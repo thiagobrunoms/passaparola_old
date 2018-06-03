@@ -102,7 +102,7 @@ public class MeditationListFragment extends Fragment implements MyOnOptionsClick
             meditationListRecyclerView.setAdapter(listAdapter);
             listAdapter.notifyDataSetChanged();
         } else {
-            Toast.makeText(context, context.getString(R.string.not_available_for_language) + context.getString(context.getResources().getIdentifier(languageId, "string", context.getPackageName())), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, context.getString(R.string.not_available_for_language) + " " + context.getString(context.getResources().getIdentifier(languageId, "string", context.getPackageName())), Toast.LENGTH_LONG).show();
         }
 
     }

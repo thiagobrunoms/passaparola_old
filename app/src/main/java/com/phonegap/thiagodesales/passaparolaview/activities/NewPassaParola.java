@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Vector;
 
 // ./adb devices
 //./adb -s DEVICE shell
@@ -64,8 +63,7 @@ public class NewPassaParola extends AppCompatActivity implements View.OnClickLis
         idiomaList = buildAlert();
 
         chiara = findViewById(R.id.htab_header);
-
-        chiara.setImageResource(getResources().getIdentifier("ch2", "drawable", getPackageName()));
+        chiara.setImageResource(R.drawable.ch2);
 
         String localLanguage = Locale.getDefault().getLanguage();
         List<String> supportedParolaLanguages = Arrays.asList(getResources().getStringArray(R.array.language_id_list));
@@ -90,9 +88,6 @@ public class NewPassaParola extends AppCompatActivity implements View.OnClickLis
         final ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
         pager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(pager);
-
-//        Intent intent = new Intent(getApplicationContext(), TesteAct.class);
-//        startActivity(intent);
 
     }
 
@@ -133,16 +128,16 @@ public class NewPassaParola extends AppCompatActivity implements View.OnClickLis
         if (parolaFragment.isAdded()) {
             parolaFragment.setCurrentParolaLanguage(languageId);
             parolaFragment.requestParola();
-        } else Log.d("onItemClick", "parolaFragment not added!");
+        }
 
         if (meditationListFragment.isAdded())
             meditationListFragment.setCurrentParolaLanguage(languageId);
-        else Log.d("onItemClick", "meditationListFragment not added!");
+
 
         if (meditationFragment.isAdded()) {
             meditationFragment.setCurrentParolaLanguage(languageId);
             meditationFragment.requestMeditations();
-        } else Log.d("onItemClick", "meditationFragment not added!");
+        }
 
         idiomaList.hide();
     }

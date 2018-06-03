@@ -20,14 +20,12 @@ public class Utils {
 
     //firstDate and secondDate on dd/MM/yyyy format
     public static boolean isFirstAfterSecond(String firstDate, String secondDate) {
-        Log.d("isFirstAfterSecond", "F = " + firstDate + " -  S = " + secondDate);
         Calendar calendar = Calendar.getInstance();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         try {
             Date dateFirst = dateFormat.parse(firstDate);
             Date dateSecond = dateFormat.parse(secondDate);
-            Log.d("isFirstAfterSecond R ", "R = " + dateFirst.before(dateSecond));
             return dateFirst.after(dateSecond);
         } catch (ParseException e) {
             return false;
@@ -47,7 +45,6 @@ public class Utils {
     }
 
     public static String isoDateToStandardFormat(String isoDate) {
-        Log.d("isoDateToS", isoDate);
         String dateParts[] = isoDate.split("T")[0].split("-");
         return dateParts[2] + "/" + dateParts[1] + "/" + dateParts[0];
     }
