@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Passa Parola - Focolare</string>
     <string name="action_settings">Ajustes</string>
     <string name="title_activity_meditation">Meditación</string>
     <string name="share_text">Texto</string>
@@ -10,10 +9,11 @@
     <string name="no_parola_for_today">Todavía no hay parola para hoy!</string>
     <string name="no_meditation_for_today">Todavía no hay meditación para hoy!</string>
     <string name="not_available_for_language">No está disponible meditaciones en </string>
-    <string name="future_features">Disponible a partir de Agosto, 2018!</string>
+    <string name="future_features">Disponible a partir de Septiembre, 2018!</string>
     <string name="long_meditation_text_warnning">¡Meditación muy extensa! No se puede compartir la imagen!</string>
+    <string name="parola_unavailable">Parola no disponible para esta fecha!</string>
+    <string name="meditation_unavailable">Meditación no disponible para esta fecha!</string>
     <string name="share_passaparola_title">Compartir Passa Parola</string>
-
     <string name="language">Idiomas</string>
     <string name="pt">Portugués</string>
     <string name="en">Inglés</string>

@@ -21,7 +21,6 @@ import com.passaparola.thiagodesales.passaparolaview.adapters.MyFragmentPagerAda
 import com.passaparola.thiagodesales.passaparolaview.android.ParolaFragment;
 import com.passaparola.thiagodesales.passaparolaview.listeners.MeditationListener;
 import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
-import com.passaparola.thiagodesales.passaparolaview.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

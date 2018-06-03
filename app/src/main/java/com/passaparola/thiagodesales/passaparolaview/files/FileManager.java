@@ -1,7 +1,6 @@
 package com.passaparola.thiagodesales.passaparolaview.files;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,10 +14,8 @@ import android.os.Environment;
 import android.support.v4.content.FileProvider;
 import android.text.TextPaint;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.passaparola.thiagodesales.passaparolaview.BuildConfig;
 import com.passaparola.thiagodesales.passaparolaview.R;
 import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
 import com.passaparola.thiagodesales.passaparolaview.utils.Utils;
@@ -27,8 +24,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Calendar;
 
 public class FileManager {
 

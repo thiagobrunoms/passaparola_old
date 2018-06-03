@@ -8,18 +8,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.passaparola.thiagodesales.passaparolaview.R;
-import com.passaparola.thiagodesales.passaparolaview.exceptions.DataInsertionException;
 import com.passaparola.thiagodesales.passaparolaview.model.Parola;
 import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
 import com.passaparola.thiagodesales.passaparolaview.utils.Utils;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.TimeZone;
 
 public class DatabaseDataManagement {
 

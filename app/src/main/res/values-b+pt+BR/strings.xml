@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Passa Parola - Focolare</string>
     <string name="action_settings">Configurações</string>
     <string name="title_activity_meditation">Meditação</string>
     <string name="share_text">Texto</string>
@@ -9,11 +8,12 @@
     <string name="author">Por: Apolônio Carvalho Nascimento</string>
     <string name="no_parola_for_today">Ainda não há parola para hoje!</string>
     <string name="no_meditation_for_today">Ainda não há meditação para hoje!</string>
-    <string name="not_available_for_language">Meditações não disponíveis em</string>
-    <string name="future_features">Disponível a partir de Agosto, 2018!</string>
+    <string name="not_available_for_language">Meditação não disponível em </string>
+    <string name="future_features">Disponível a partir de Setembro, 2018!</string>
     <string name="long_meditation_text_warnning">Meditação muito extensa! Não é possível compartilhar imagem!</string>
     <string name="share_passaparola_title">Compartilhar Passa Parola</string>
-
+    <string name="parola_unavailable">Parola não disponível para esta data!</string>
+    <string name="meditation_unavailable">Meditação não disponível para esta data!</string>
     <string name="language">Idiomas</string>
     <string name="pt">Português</string>
     <string name="en">Inglês</string>

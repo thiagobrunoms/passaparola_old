@@ -1,12 +1,9 @@
 package com.passaparola.thiagodesales.passaparolaview.utils;
 
-import android.util.Log;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Random;
 import java.util.TimeZone;
 
 public class Utils {

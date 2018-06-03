@@ -12,8 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.passaparola.thiagodesales.passaparolaview.R;
-import com.passaparola.thiagodesales.passaparolaview.connection.Connections;
-import com.passaparola.thiagodesales.passaparolaview.database.DatabaseDataManagement;
 import com.passaparola.thiagodesales.passaparolaview.facade.Facade;
 import com.passaparola.thiagodesales.passaparolaview.listeners.ParolaListener;
 import com.passaparola.thiagodesales.passaparolaview.model.Parola;

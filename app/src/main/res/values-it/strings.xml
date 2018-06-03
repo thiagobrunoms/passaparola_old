@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Passa Parola - Focolari</string>
     <string name="action_settings">Impostazioni</string>
     <string name="title_activity_meditation">Meditazione</string>
     <string name="share_text">Testo</string>
@@ -9,9 +8,11 @@
     <string name="author">Da: Apolônio Carvalho Nascimento</string>
     <string name="no_parola_for_today">Non c\'è ancora spazio per oggi!</string>
     <string name="no_meditation_for_today">Non c\'è ancora meditazione per oggi!</string>
-    <string name="not_available_for_language">Meditazioni non disponibili in</string>
-    <string name="future_features">Disponibile da agosto, 2018!</string>
+    <string name="not_available_for_language">Meditazioni non disponibili in </string>
+    <string name="future_features">Disponibile da Settembre, 2018!</string>
     <string name="long_meditation_text_warnning">Meditazione molto estesa! Impossibile condividere l\'immagine!</string>
+    <string name="parola_unavailable">Parola non disponibile per questa data!</string>
+    <string name="meditation_unavailable">Meditazione non disponibile per questa data!</string>
     <string name="share_passaparola_title">Condividi la Passa Parola</string>
     <string name="language">Lingue</string>
     <string name="pt">Portoghese</string>

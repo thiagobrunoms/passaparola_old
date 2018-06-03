@@ -2,16 +2,12 @@ package com.passaparola.thiagodesales.passaparolaview.android;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,15 +21,11 @@ import com.passaparola.thiagodesales.passaparolaview.facade.Facade;
 import com.passaparola.thiagodesales.passaparolaview.listeners.MeditationListener;
 import com.passaparola.thiagodesales.passaparolaview.listeners.MyOnOptionsClickListener;
 import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
-import com.passaparola.thiagodesales.passaparolaview.utils.Constants;
 import com.passaparola.thiagodesales.passaparolaview.utils.Utils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
-import java.util.TimeZone;
 
 public class MeditationListFragment extends Fragment implements MyOnOptionsClickListener, MeditationListener, View.OnClickListener {
 
@@ -68,7 +60,7 @@ public class MeditationListFragment extends Fragment implements MyOnOptionsClick
         meditationListRecyclerView.setLayoutManager(new LinearLayoutManager(context));
 
         meditationsList = new ArrayList<>();
-        listAdapter = new MeditationListAdapter(meditationsList, this, meditationListRecyclerView, languageId);
+        listAdapter = new MeditationListAdapter(meditationsList, this, meditationListRecyclerView, languageId, context);
         listAdapter.setCurrentParolaLanguage(languageId);
         meditationListRecyclerView.setAdapter(listAdapter);
 
@@ -168,21 +160,26 @@ public class MeditationListFragment extends Fragment implements MyOnOptionsClick
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.button_share_text) {
-            meditationItemSelected.setLocalUri(null);
-            facade.shareParola(meditationItemSelected);
-            shareDialog.dismiss();
-        } else if (view.getId() == R.id.button_share_image) {
-            Log.d("onClick", "IMAGE");
-            facade.buildImageForSharing(meditationItemSelected);
-
-            if (meditationItemSelected.getLocalUri() != null)
+            if (meditationItemSelected.getParola(languageId) != null) {
+                meditationItemSelected.setLocalUri(null);
                 facade.shareParola(meditationItemSelected);
-            else {
-                Toast.makeText(context, getString(R.string.long_meditation_text_warnning), Toast.LENGTH_LONG).show();
-            }
+            } else
+                Toast.makeText(context, getString(R.string.parola_unavailable), Toast.LENGTH_LONG).show();
 
-            shareDialog.dismiss();
+        } else if (view.getId() == R.id.button_share_image) {
+            if (meditationItemSelected.getMeditation(languageId) != null) { //if meditation existis for such language
+                facade.buildImageForSharing(meditationItemSelected);
+
+                if (meditationItemSelected.getLocalUri() != null)
+                    facade.shareParola(meditationItemSelected);
+                else {
+                    Toast.makeText(context, getString(R.string.long_meditation_text_warnning), Toast.LENGTH_LONG).show();
+                }
+            } else
+                Toast.makeText(context, getString(R.string.meditation_unavailable), Toast.LENGTH_LONG).show();
         }
+
+        shareDialog.dismiss();
     }
 
 }

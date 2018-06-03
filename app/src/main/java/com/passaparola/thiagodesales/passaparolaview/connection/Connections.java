@@ -1,7 +1,6 @@
 package com.passaparola.thiagodesales.passaparolaview.connection;
 
 import android.os.AsyncTask;
-import android.text.Html;
 import android.util.Log;
 import android.util.Xml;
 
@@ -20,7 +19,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -63,6 +61,7 @@ public class Connections extends AsyncTask<String, Integer, String> {
 
         try {
             URL url = new URL("http://parolafocolare.blogspot.com/feeds/posts/default");
+            //http://parolafocolare.blogspot.com/feeds/posts/default
 
             InputStream input = url.openConnection().getInputStream();
             XmlPullParser xmlPullParser = Xml.newPullParser();
@@ -99,12 +98,10 @@ public class Connections extends AsyncTask<String, Integer, String> {
                     xmlPullParser.nextTag();
                 }
 
-                Log.d("Connections", "name: " + name);
                 if (name.equalsIgnoreCase("title")) {
                     parola = result;
                 } else if (name.equalsIgnoreCase("content")) {
                     meditation = result;
-                    Log.d("MEDITAÇÃO DOWNLOADADA", meditation);
                 } else if (name.equalsIgnoreCase("published")) {
                     publishedDate = result;
                 }
@@ -114,23 +111,39 @@ public class Connections extends AsyncTask<String, Integer, String> {
                         String meditationPtIt[] = meditation.split("#");
                         String parolaPtIt[] = parola.split("#");
 
-                        if (parolaPtIt != null && parolaPtIt.length == 2) { //TODO must be equals to the number of meditations supported languages
-                            HashMap<String, String> parolas = new HashMap<>();
-                            parolas.put("pt", parolaPtIt[0]);
-                            parolas.put("it", parolaPtIt[1].trim());
+                        if (parolaPtIt != null) {
+                            if (parolaPtIt.length == 2) {
+                                HashMap<String, String> parolas = new HashMap<>();
+                                parolas.put("pt", parolaPtIt[0]);
+                                parolas.put("it", parolaPtIt[1].trim());
 
-                            HashMap<String, String> meditations = new HashMap<>();
-                            meditations.put("pt", meditationPtIt[0].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
-                            meditations.put("it", meditationPtIt[1].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
+                                HashMap<String, String> meditations = new HashMap<>();
+                                meditations.put("pt", meditationPtIt[0].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
+                                meditations.put("it", meditationPtIt[1].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
 
-//                            String dateParts[] = publishedDate.split("T")[0].split("-");
-//                            publishedDate = dateParts[2] + "/" + dateParts[1] + "/" + dateParts[0];
+                                RSSMeditationItem item = new RSSMeditationItem(publishedDate, parolas, meditations);
+                                Log.d("MEDITAÇÃO COMPLETA", item.toString());
+                                meditationList.add(item);
+                            } else if (parolaPtIt.length == 5) {
+                                HashMap<String, String> parolas = new HashMap<>();
+                                parolas.put("de", parolaPtIt[0]);
+                                parolas.put("es", parolaPtIt[1]);
+                                parolas.put("en", parolaPtIt[2]);
+                                parolas.put("it", parolaPtIt[3]);
+                                parolas.put("pt", parolaPtIt[4]);
 
-                            RSSMeditationItem item = new RSSMeditationItem(publishedDate, parolas, meditations);
-                            Log.d("MEDITAÇÃO COMPLETA", item.toString());
-                            meditationList.add(item);
+                                HashMap<String, String> meditations = new HashMap<>();
+                                meditations.put("de", meditationPtIt[0].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
+                                meditations.put("es", meditationPtIt[1].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
+                                meditations.put("en", meditationPtIt[2].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
+                                meditations.put("it", meditationPtIt[3].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
+                                meditations.put("pt", meditationPtIt[4].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
+
+                                RSSMeditationItem item = new RSSMeditationItem(publishedDate, parolas, meditations);
+                                Log.d("MEDITAÇÃO COMPLETA", item.toString());
+                                meditationList.add(item);
+                            }
                         }
-
                     }
 
                     publishedDate = null;

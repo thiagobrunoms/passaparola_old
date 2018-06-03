@@ -1,5 +1,6 @@
 package com.passaparola.thiagodesales.passaparolaview.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,7 +12,6 @@ import com.passaparola.thiagodesales.passaparolaview.holders.MeditationItemHolde
 import com.passaparola.thiagodesales.passaparolaview.R;
 import com.passaparola.thiagodesales.passaparolaview.listeners.MyOnOptionsClickListener;
 import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
-import com.passaparola.thiagodesales.passaparolaview.utils.Constants;
 import com.passaparola.thiagodesales.passaparolaview.utils.Utils;
 
 import java.util.List;
@@ -22,13 +22,14 @@ public class MeditationListAdapter extends RecyclerView.Adapter<MeditationItemHo
     private MyOnOptionsClickListener clickListener;
     private String languageId;
     private RecyclerView recyclerView;
-    private Facade facade;
+    private Context context;
 
-    public MeditationListAdapter(List<RSSMeditationItem> meditationList, MyOnOptionsClickListener clickListener, RecyclerView recyclerView, String languageId) {
+    public MeditationListAdapter(List<RSSMeditationItem> meditationList, MyOnOptionsClickListener clickListener, RecyclerView recyclerView, String languageId, Context context) {
         this.meditationList = meditationList;
         this.clickListener = clickListener;
         this.languageId = languageId;
         this.recyclerView = recyclerView;
+        this.context = context;
     }
 
     public void setCurrentParolaLanguage(String languageId) {
@@ -47,8 +48,12 @@ public class MeditationListAdapter extends RecyclerView.Adapter<MeditationItemHo
         final RSSMeditationItem meditationItem = meditationList.get(position);
 
         holder.parolaDate.setText(Utils.isoDateToStandardFormat(meditationItem.getPublishedDate()));
-        holder.parolaTitle.setText(meditationItem.getParola(languageId));
-        holder.meditation.setText(meditationItem.getMeditation(languageId));
+
+        String parola = meditationItem.getParola(languageId);
+        String meditation = meditationItem.getMeditation(languageId);
+
+        holder.parolaTitle.setText(parola != null ? parola : context.getString(R.string.parola_unavailable));
+        holder.meditation.setText(meditation != null ? meditation : context.getString(R.string.meditation_unavailable));
 
         holder.viewButton.setOnClickListener(new View.OnClickListener() {
             @Override

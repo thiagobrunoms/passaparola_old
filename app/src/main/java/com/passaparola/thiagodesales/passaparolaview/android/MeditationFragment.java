@@ -76,7 +76,7 @@ public class MeditationFragment extends Fragment implements MeditationListener{
         if (meditation != null) {
             Log.d("MedFrag.requestMeditat", "vai feedUI " + meditation);
             setMeditation(meditation);
-        }
+        } else Log.d("Med.Request", "meditation é null!");
 
         //This fragment can't request for meditations, since MeditationListFragment already does.
         //It receives the last one through OnNewMeditation callback, if download is needed.
@@ -88,14 +88,17 @@ public class MeditationFragment extends Fragment implements MeditationListener{
     public void feedUI() {
         dateTextView.setText(Utils.isoDateToStandardFormat(meditation.getPublishedDate()));
 
-        if (supportedLanguageList.contains(languageId)) {
-            parolaTextView.setText(meditation.getParola(languageId)); //TODO w.r.t local language
-            meditationView.setText(meditation.getMeditation(languageId) + "\n Apolônio Carvalho Nascimento");//TODO w.r.t local language
+        if (this.isAdded() && supportedLanguageList.contains(languageId)) {
+
+            String parolaToSet = meditation.getParola(languageId);
+            String meditationToSet = meditation.getMeditation(languageId);
+
+            parolaTextView.setText(parolaToSet != null ? parolaToSet : getString(R.string.parola_unavailable));
+            meditationView.setText( (meditationToSet != null ? meditationToSet : getString(R.string.meditation_unavailable)) + "\nApolônio Carvalho Nascimento");
             currentSupportedLanguageId = languageId;
         } else {
-            //TODO else generate warnning!?
-            parolaTextView.setText(meditation.getParola(currentSupportedLanguageId)); //TODO w.r.t local language
-            meditationView.setText(meditation.getMeditation(currentSupportedLanguageId));//TODO w.r.t local language
+            parolaTextView.setText(meditation.getParola(currentSupportedLanguageId));
+            meditationView.setText(meditation.getMeditation(currentSupportedLanguageId));
         }
     }
 
