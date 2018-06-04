@@ -46,7 +46,6 @@ public class DatabaseDataManagement {
 
     //TODO Estou apenas adicionando a lista de meditações. Entretanto, não estou removendo as antigas quando atualizo a lista inteira.
     public boolean insertMeditation(RSSMeditationItem meditation) {
-        Log.d("insertMeditation", meditation.toString());
         ContentValues values = new ContentValues();
 
         HashMap<String, String> parolas = meditation.getParolas();
@@ -80,12 +79,10 @@ public class DatabaseDataManagement {
     }
 
     public ArrayList<RSSMeditationItem> readAllMeditations() {
-        Log.d("readAllMeditations", "Lendo todas as meditações");
         Cursor cursor = sqlReadable.query(DatabaseDefinitions.Meditations.TABLE_NAME, null, null, null, null, null, "date(" + DatabaseDefinitions.Meditations.DATE + ")" +
                 OrderDirection.DESC.name());
 
         ArrayList<RSSMeditationItem> meditations = new ArrayList<>();
-        Log.d("readAllMeditations", "getCount = " + cursor.getCount());
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
 
@@ -107,7 +104,7 @@ public class DatabaseDataManagement {
                     meditations.add(meditation);
                 }
             } while(cursor.moveToNext());
-        } else Log.d("reaadAllMeditations", "Não ha meditações salvas!");
+        }
 
         return meditations;
     }
@@ -115,7 +112,6 @@ public class DatabaseDataManagement {
     public RSSMeditationItem readMeditationFromDate(Date dateFrom) {
 //        String date = Utils.toBrazilsLocalDate(dateFrom);
 
-        Log.d("Date a ser buscada", dateFrom.toString());
 //        Cursor cursor = sqlReadable.query(DatabaseDefinitions.Meditations.TABLE_NAME, null,
 //                DatabaseDefinitions.Meditations.DATE + " = ?", new String[]{dateFrom}, null, null,
 //                null, null);
@@ -126,7 +122,7 @@ public class DatabaseDataManagement {
                 new String[]{new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime())+"%"} );
 
         RSSMeditationItem meditationItem = null;
-        Log.d("readMeditationFromDate", "R: para" + dateFrom + " -> " + cursor.getCount() );
+
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             meditationItem = new RSSMeditationItem();
@@ -143,8 +139,6 @@ public class DatabaseDataManagement {
     }
 
     public void insertParola(Parola parola) {
-        Log.d("insertParola", parola.toString());
-
         ContentValues contentValues = new ContentValues();
         contentValues.put(DatabaseDefinitions.Parolas.DATE, parola.getDate());
         contentValues.put(DatabaseDefinitions.Parolas.LANGUAGE, parola.getLanguage());
@@ -152,7 +146,6 @@ public class DatabaseDataManagement {
 
         try {
             long returnedId = sqlWriteable.insert(DatabaseDefinitions.Parolas.TABLE_NAME, null, contentValues);
-            Log.d("insertParola", "Id da parola " + returnedId);
         } catch (SQLiteConstraintException e) {
             Log.d("insertParola", "Parola " + parola.getParola()  + " already stored!");
         }
@@ -162,8 +155,6 @@ public class DatabaseDataManagement {
 
     public HashMap<String, Parola> readLastParolas() {
         String today = Utils.getBrazilsLocalDate();
-
-        Log.d("readLastParolas",  "buscando parolas da data " + today);
 
         Cursor cursor = sqlReadable.query(DatabaseDefinitions.Parolas.TABLE_NAME, null,
                 DatabaseDefinitions.Parolas.DATE + " = ?", new String[]{today}, null, null, null);
@@ -178,28 +169,12 @@ public class DatabaseDataManagement {
             parola.setLanguage(languageId);
             parola.setParola(cursor.getString(cursor.getColumnIndex(DatabaseDefinitions.Parolas.PAROLA)));
 
-            Log.d("readLastParolas", "Ultima parola armazenada " + parola.toString());
-
             parolas.put(languageId, parola);
         }
 
 
         return parolas;
     }
-//
-//    public ArrayList<Red> readRedFilterByDateInterval(String dateInit, String dateEnd, OrderDirection orderDirection) {
-//        Log.d("filtering oranges", "i: " + dateInit + ", e: " + dateEnd);
-//        Cursor cursor = dbReadable.query(DatabaseDefinitions.Red.TABLE_NAME, null, DatabaseDefinitions.Red.DATE +
-//                " BETWEEN ? AND ?", new String[]{dateInit, dateEnd}, null, null, getOrderByDate(orderDirection), null);
-//        return readRedFromCursor(cursor);
-//    }
 
-//    private boolean exists(String dateUS, Aspects aspect) {
-//        Cursor cursor = dbReadable.query(DatabaseDefinitions.getTableName(aspect), new String[]{DatabaseDefinitions.DefaultColumns.DATE},
-//                DatabaseDefinitions.DefaultColumns.DATE + " = ?", new String[]{dateUS}, null, null, null);
-//        int count = cursor.getCount();
-//        cursor.close();
-//        return (count > 0);
-//    }
 
 }

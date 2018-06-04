@@ -1,5 +1,6 @@
 package com.passaparola.thiagodesales.passaparolaview.android;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -31,8 +32,7 @@ public class MeditationFragment extends Fragment implements MeditationListener{
     private List<String> supportedLanguageList;
     private RSSMeditationItem meditation;
     private String currentSupportedLanguageId;
-
-
+    private Context context;
 
     @Nullable
     @Override
@@ -49,13 +49,18 @@ public class MeditationFragment extends Fragment implements MeditationListener{
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        facade = Facade.getInstance(getActivity());
+        facade.addMeditationListeners(this);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
 
         dateTextView.setText(new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime()));
-
-        facade = Facade.getInstance(getContext());
-        facade.addMeditationListeners(this);
 
         requestMeditations();
     }

@@ -1,9 +1,11 @@
 package com.passaparola.thiagodesales.passaparolaview.connection;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Xml;
 
+import com.passaparola.thiagodesales.passaparolaview.R;
 import com.passaparola.thiagodesales.passaparolaview.model.Parola;
 import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
 
@@ -39,10 +41,12 @@ public class Connections extends AsyncTask<String, Integer, String> {
     private ArrayList<RSSMeditationItem> meditationList;
     private Pattern pattern;
     private Parola parolaFromWeb;
+    private String[] supportedLanguages;
 
-    public Connections(ConnectionResponseHandler responseHandler) {
+    public Connections(ConnectionResponseHandler responseHandler, Context context) {
         this.responseHandler = responseHandler;
         pattern = Pattern.compile("(\\d{1,2}/\\d{1,2}/\\d{4}|\\d{1,2}/\\d{1,2})", Pattern.CASE_INSENSITIVE);
+        supportedLanguages = context.getResources().getStringArray(R.array.supported_meditations);
     }
 
     public void setParameters(HashMap<Object, Object> params) {
@@ -122,22 +126,31 @@ public class Connections extends AsyncTask<String, Integer, String> {
                                 meditations.put("it", meditationPtIt[1].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
 
                                 RSSMeditationItem item = new RSSMeditationItem(publishedDate, parolas, meditations);
-                                Log.d("MEDITAÇÃO COMPLETA", item.toString());
-                                meditationList.add(item);
-                            } else if (parolaPtIt.length == 5) {
-                                HashMap<String, String> parolas = new HashMap<>();
-                                parolas.put("de", parolaPtIt[0]);
-                                parolas.put("es", parolaPtIt[1]);
-                                parolas.put("en", parolaPtIt[2]);
-                                parolas.put("it", parolaPtIt[3]);
-                                parolas.put("pt", parolaPtIt[4]);
 
+                                meditationList.add(item);
+                            } else if (parolaPtIt.length > 2) {
+                                HashMap<String, String> parolas = new HashMap<>();
                                 HashMap<String, String> meditations = new HashMap<>();
-                                meditations.put("de", meditationPtIt[0].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
-                                meditations.put("es", meditationPtIt[1].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
-                                meditations.put("en", meditationPtIt[2].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
-                                meditations.put("it", meditationPtIt[3].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
-                                meditations.put("pt", meditationPtIt[4].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
+
+                                for (int i=0; i<supportedLanguages.length; i++) {
+                                    parolas.put(supportedLanguages[i], parolaPtIt[i]);
+                                    meditations.put(supportedLanguages[i], meditationPtIt[i].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
+                                }
+
+
+
+//                                parolas.put("de", parolaPtIt[0]);
+//                                parolas.put("es", parolaPtIt[1]);
+//                                parolas.put("en", parolaPtIt[2]);
+//                                parolas.put("it", parolaPtIt[3]);
+//                                parolas.put("pt", parolaPtIt[4]);
+
+
+//                                meditations.put("de", meditationPtIt[0].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
+//                                meditations.put("es", meditationPtIt[1].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
+//                                meditations.put("en", meditationPtIt[2].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
+//                                meditations.put("it", meditationPtIt[3].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
+//                                meditations.put("pt", meditationPtIt[4].replaceAll("\\<.*?>","").replace("&nbsp;", ""));
 
                                 RSSMeditationItem item = new RSSMeditationItem(publishedDate, parolas, meditations);
                                 Log.d("MEDITAÇÃO COMPLETA", item.toString());

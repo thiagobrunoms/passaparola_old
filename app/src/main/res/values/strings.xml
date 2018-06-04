@@ -70,11 +70,11 @@
     </array>
 
     <array name="supported_meditations">
-        <item>pt</item>
-        <item>it</item>
+        <item>de</item>
         <item>es</item>
         <item>en</item>
-        <item>de</item>
+        <item>it</item>
+        <item>pt</item>
     </array>
 
 

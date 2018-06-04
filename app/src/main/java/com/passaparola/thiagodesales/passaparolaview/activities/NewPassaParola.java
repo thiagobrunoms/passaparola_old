@@ -1,5 +1,6 @@
 package com.passaparola.thiagodesales.passaparolaview.activities;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -19,6 +20,7 @@ import com.passaparola.thiagodesales.passaparolaview.android.MeditationFragment;
 import com.passaparola.thiagodesales.passaparolaview.android.MeditationListFragment;
 import com.passaparola.thiagodesales.passaparolaview.adapters.MyFragmentPagerAdapter;
 import com.passaparola.thiagodesales.passaparolaview.android.ParolaFragment;
+import com.passaparola.thiagodesales.passaparolaview.facade.Facade;
 import com.passaparola.thiagodesales.passaparolaview.listeners.MeditationListener;
 import com.passaparola.thiagodesales.passaparolaview.model.RSSMeditationItem;
 
@@ -52,6 +54,7 @@ public class NewPassaParola extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_new_passa_parola);
         Toolbar toolbar = (Toolbar) findViewById(R.id.htab_toolbar);
         setSupportActionBar(toolbar);
@@ -88,6 +91,11 @@ public class NewPassaParola extends AppCompatActivity implements View.OnClickLis
         pager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(pager);
 
+        String supported[] = getResources().getStringArray(R.array.supported_meditations);
+        for (int i = 0; i < supported.length; i++) {
+            Log.d("supported", supported[i]);
+        }
+
     }
 
 
@@ -122,7 +130,6 @@ public class NewPassaParola extends AppCompatActivity implements View.OnClickLis
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         String language = (String) listView.getItemAtPosition(position);
         languageId = hashLangId.get(language);
-        Log.d("Selecionado", language + " -> " + languageId);
 
         if (parolaFragment.isAdded()) {
             parolaFragment.setCurrentParolaLanguage(languageId);
