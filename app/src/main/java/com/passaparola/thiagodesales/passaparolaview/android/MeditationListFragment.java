@@ -74,7 +74,7 @@ public class MeditationListFragment extends Fragment implements MyOnOptionsClick
     public void onStart() {
         super.onStart();
         supportedLanguageList = Arrays.asList(getResources().getStringArray(R.array.supported_meditations));
-        facade = Facade.getInstance(this.context);
+        facade = Facade.getInstance();
         facade.addMeditationListeners(this);
         requestMeditations();
 
@@ -104,29 +104,24 @@ public class MeditationListFragment extends Fragment implements MyOnOptionsClick
 
         String today = Utils.getBrazilsLocalDate();
         if (localMeditationsList.size() > 0 && !Utils.isFirstAfterSecond(today, Utils.isoDateToStandardFormat(localMeditationsList.get(0).getPublishedDate()))) {
-            Log.d("requestMeditations", "A primeira é " + localMeditationsList.get(0).getParolas().get("pt"));
             feedUI(localMeditationsList);
         } else {
-            Log.d("requestMeditations", "baixando da internet");
             facade.downloadMeditations();
         }
     }
 
     private void feedUI(ArrayList<RSSMeditationItem> meditationList) {
-        Log.d("feedUI", "preenchendo UI da lista " + meditationList.get(0).getPublishedDate());
         meditationsList.addAll(meditationList);
         listAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onNewMeditation(ArrayList<RSSMeditationItem> meditations) {
-        Log.d("onNewMeditation", "Chegou meditacoes da rede: " + meditations.size());
         feedUI(meditations);
     }
 
     @Override
     public void onReadMeditation(RSSMeditationItem meditationItem) {
-        Log.d("onRead", "Ler meditacao " + meditationItem.getPublishedDate());
         ArrayList<RSSMeditationItem> meditationList = new ArrayList<>();
         meditationList.add(meditationItem);
         meditationListener.onNewMeditation(meditationList);

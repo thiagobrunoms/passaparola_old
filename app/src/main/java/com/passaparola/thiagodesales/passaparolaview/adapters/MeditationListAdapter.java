@@ -58,8 +58,6 @@ public class MeditationListAdapter extends RecyclerView.Adapter<MeditationItemHo
         holder.viewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("Clicando", "Id = " + view.getId());
-                Log.d("Item selecionado", meditationItem.getPublishedDate());
                 clickListener.onReadExperiences(meditationItem);
             }
         });

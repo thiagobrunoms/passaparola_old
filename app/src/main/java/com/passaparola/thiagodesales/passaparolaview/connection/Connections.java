@@ -217,10 +217,8 @@ public class Connections extends AsyncTask<String, Integer, String> {
                 parolaDate = m.group(1);
             }
 
-            Log.d("html downloadado", responseStr);
             todaysParola = responseStr.split("</STRONG>")[1].split("<STRONG>")[1];
 //            todaysParola = todaysParola + "#" + parolaDate;
-            Log.d("response web", "response: " + todaysParola);
 
             parolaFromWeb = new Parola(parolaDate, todaysParola, language);
             rd.close();
@@ -230,8 +228,6 @@ public class Connections extends AsyncTask<String, Integer, String> {
     }
 
     protected String doInBackground(String... params) {
-        Log.d("doInBackground Tag", "começou a executar doInBack ");
-
         switch (requestType) {
             case PAROLA:
                 requestParola((String) this.params.get("language"));
@@ -244,13 +240,9 @@ public class Connections extends AsyncTask<String, Integer, String> {
         return "";
     }
 
-    protected void onProgressUpdate(Integer... progress) {
-        Log.d("onProgressUp", "Executando onProgressUp");
-    }
+    protected void onProgressUpdate(Integer... progress) { }
 
     protected void onPostExecute(String result) {
-        Log.d("onPostExecute", "Executando onPostExecute");
-
         if (parolaFromWeb != null)
             responseHandler.fireResponse(parolaFromWeb);
         else if (meditationList != null)

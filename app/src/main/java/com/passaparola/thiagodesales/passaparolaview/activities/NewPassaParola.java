@@ -55,6 +55,9 @@ public class NewPassaParola extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Facade facade = Facade.getInstance();
+        facade.initialize(this);
+
         setContentView(R.layout.activity_new_passa_parola);
         Toolbar toolbar = (Toolbar) findViewById(R.id.htab_toolbar);
         setSupportActionBar(toolbar);
@@ -90,11 +93,6 @@ public class NewPassaParola extends AppCompatActivity implements View.OnClickLis
         final ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
         pager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(pager);
-
-        String supported[] = getResources().getStringArray(R.array.supported_meditations);
-        for (int i = 0; i < supported.length; i++) {
-            Log.d("supported", supported[i]);
-        }
 
     }
 

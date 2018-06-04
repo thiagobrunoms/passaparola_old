@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +51,7 @@ public class MeditationFragment extends Fragment implements MeditationListener{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        facade = Facade.getInstance(getActivity());
+        facade = Facade.getInstance();
         facade.addMeditationListeners(this);
     }
 
@@ -76,12 +75,10 @@ public class MeditationFragment extends Fragment implements MeditationListener{
 
 
     public void requestMeditations() {
-        Log.d("MedFrag.requestMeditat", "Solicitando Meditations");
         RSSMeditationItem meditation = facade.readTodaysMeditation();
         if (meditation != null) {
-            Log.d("MedFrag.requestMeditat", "vai feedUI " + meditation);
             setMeditation(meditation);
-        } else Log.d("Med.Request", "meditation é null!");
+        }
 
         //This fragment can't request for meditations, since MeditationListFragment already does.
         //It receives the last one through OnNewMeditation callback, if download is needed.

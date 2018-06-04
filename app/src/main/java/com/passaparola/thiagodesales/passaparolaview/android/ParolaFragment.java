@@ -48,7 +48,7 @@ public class ParolaFragment extends Fragment implements ParolaListener {
     @Override
     public void onStart() {
         super.onStart();
-        facade = Facade.getInstance(this.context);
+        facade = Facade.getInstance();
         facade.addParolaListerner(this);
         requestParola();
     }
@@ -58,7 +58,6 @@ public class ParolaFragment extends Fragment implements ParolaListener {
     }
 
     public void requestParola() {
-        Log.d("requestParola", "facade -> " + facade);
         HashMap<String, Parola> lastParolas = facade.readParolas();
 
         if (lastParolas.size() == 0 || lastParolas.get(currentLanguageId) == null) {
@@ -73,9 +72,8 @@ public class ParolaFragment extends Fragment implements ParolaListener {
             parolaDateTextView.setText(parola.getDate());
             parolaPraseTextView.setText(parola.getParola());
 
-            Log.d("feedUI", "atualizando flags");
             flagImageView.setImageResource(getResources().getIdentifier(currentLanguageId, "drawable", getContext().getPackageName()));
-        } else Log.d("feedUI", "nulos");
+        }
     }
 
     @Override
